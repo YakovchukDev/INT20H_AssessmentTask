@@ -4,5 +4,5 @@
 ## Team composition:
 - [YakovchukDev](https://github.com/YakovchukDev) - `Fullstack developer (ASP.NET CORE)`
 - [Rin](https://github.com/Haristo-Rin) - `Frontend developer (HTML/CSS)`
-- [Kyryll81](https://github.com/Kyryll81) - `Frontend developer (JS/TS)` + `SQL developer`
+- [Hyperlivus](https://github.com/Hyperlivus) - `Frontend developer (JS/TS)`
 - [DimaBohdan](https://github.com/DimaBohdan) - `Backend developer (C#)`
