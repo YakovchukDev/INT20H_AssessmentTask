@@ -5,7 +5,7 @@ VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuestPlatform.Server", "QuestPlatform.Server\QuestPlatform.Server.csproj", "{CD6317C1-DBA8-4DDF-81FB-E2A70C69B25E}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "QuestPlatform.client", "questplatform.client\QuestPlatform.client.esproj", "{6173CA4A-8F6A-489E-BBF0-E29D78D532A0}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "QuestPlatform.Client", "questplatform.client\QuestPlatform.Client.esproj", "{6173CA4A-8F6A-489E-BBF0-E29D78D532A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
