@@ -1,0 +1,92 @@
+body {
+    width: 1080px;
+    height: 640px;
+    background: #000d3a;
+    
+}
+
+.block {
+    margin-left: 258px;
+    margin-top: 98px;
+    border-radius: 30px;
+    width: 564px;
+    height: 444px;
+    background: #6c91c5;
+}
+
+.logo {
+    margin-top: 24px;
+    margin-left: 186px;
+    width: 192px;
+    height: 60px;
+}
+
+.btn-s {
+    margin-left: 161px;
+    margin-top: 44px;
+    font-weight: 600;
+    font-size: 24px;
+}
+
+.login {
+    font-family: "IBM Plex Mono", serif;
+    text-decoration: none;
+    color: #c0c0c8;
+}
+
+.signin {
+    font-family: "IBM Plex Mono", serif;
+    margin-left: 40px;
+    text-decoration: none;
+    color: #000d3a;
+    
+    
+}
+
+.email {
+    padding-left: 24px;
+    margin-left: 60px;
+    margin-top: 24px;
+    font-family: "IBM Plex Mono", serif;
+    border: none;
+    border-radius: 30px;
+    width: 444px;
+    height: 64px;
+    background: #c0c0c8;
+    font-weight: 600;
+    font-size: 24px;
+    color: #6c91c5;
+}
+
+.password {
+    padding-left: 24px;
+    margin-left: 60px;
+    margin-top: 24px;
+    font-family: "IBM Plex Mono", serif;
+    border: none;
+    border-radius: 30px;
+    width: 444px;
+    height: 64px;
+    background: #c0c0c8;
+    font-weight: 600;
+    font-size: 24px;
+    color: #6c91c5;
+}
+
+.btn{
+    margin-left: 160px;
+    margin-top: 24px;
+    border-radius: 30px;
+    width: 244px;
+    height: 64px;
+    background: #bebec8;
+    border: none;
+}
+
+.btn-log {
+    font-family: "IBM Plex Mono", serif;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 24px;
+    color: #6c91c5;
+}
