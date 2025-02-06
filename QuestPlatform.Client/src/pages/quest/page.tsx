@@ -1,4 +1,6 @@
-const QuestPage = () => {
+import {FC} from "react";
+
+const QuestPage:FC = () => {
     return (
         <div>
             Quest
