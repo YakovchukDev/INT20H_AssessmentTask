@@ -12,6 +12,7 @@
         public DateTime UpdatedAt { get; set; }
         public int PreviewMediaFileId { get; set; }
         public MediaFile PreviewMediaFile { get; set; }
+        public TimeSpan? Timer { get; set; }
 
         public ICollection<Page> Pages { get; set; }
         public ICollection<QuestRating> Ratings { get; set; }

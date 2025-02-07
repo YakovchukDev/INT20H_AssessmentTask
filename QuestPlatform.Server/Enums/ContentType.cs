@@ -1,7 +1,8 @@
 ﻿namespace QuestPlatform.Server.Enums
 {
-    public enum FileType
+    public enum ContentType
     {
+        Text,
         Image,
         Video,
         Audio
