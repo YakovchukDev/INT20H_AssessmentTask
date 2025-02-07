@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using QuestPlatform.Server.Data;
 using QuestPlatform.Server.Models;
 using QuestPlatform.Server.Services;
 
@@ -10,8 +11,8 @@ namespace QuestPlatform.Server.Controllers
     public class AuthController : ControllerBase
     {
         private readonly AuthService _authService;
-        private readonly AppDbContext _context;
-        public AuthController(AuthService authService, AppDbContext context)
+        private readonly QuestPlatformDbContext _context;
+        public AuthController(AuthService authService, QuestPlatformDbContext context)
         {
             _authService = authService;
             _context = context;

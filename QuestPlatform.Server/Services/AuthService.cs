@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using QuestPlatform.Server.Data;
 
 
 
@@ -12,10 +13,10 @@ namespace QuestPlatform.Server.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly AppDbContext _context;
+        private readonly QuestPlatformDbContext _context;
         private readonly IConfiguration _configuration;
 
-        public AuthService(AppDbContext context, IConfiguration configuration)
+        public AuthService(QuestPlatformDbContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
@@ -28,13 +29,12 @@ namespace QuestPlatform.Server.Services
                 return new RegisterResponse(false, "Пароль має містити мінімум 6 символів");
             if (!new EmailAddressAttribute().IsValid(request.Email))
                 return new RegisterResponse(false, "Невірний формат email");
-            if (await _context.Users.AnyAsync(user => user.Email == request.Email || user.Nickname == request.Nickname))
+            if (await _context.Users.AnyAsync(user => user.Email == request.Email || user.Username == request.Username))
                 return new RegisterResponse(false, "Користувач з таким email або нікнеймом вже існує");
             var user = new User
             {
+                Name = request.Name,
                 Username = request.Username,
-                Nickname = request.Nickname,
-                AboutMe = request.AboutMe,
                 Email = request.Email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password)
             };
