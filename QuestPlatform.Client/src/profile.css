@@ -1,0 +1,211 @@
+body {
+    width: 1080px;
+    height: 640px;
+    background: #fff;
+}
+
+.profil {
+    display: flex;
+}
+
+.info {
+    margin-left: 48px;
+}
+
+.user_icons {
+    margin-top: 40px;
+    width: 265px;
+    height: 265px;
+}
+
+.user_name {
+    margin: 0;
+    font-family: "IBM Plex Mono", serif;
+    font-weight: 600;
+    font-size: 32px;
+    color: #000;
+}
+
+.user_subname {
+    margin: 0;
+    font-family: "IBM Plex Mono", sans-serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 24px;
+    color: #6a6a6a;
+}
+
+.badge {
+    display: flex;
+    margin-top: 16px;
+}
+
+.img-badge {
+    width: 32px;
+    height: 32px;
+}
+
+.p-badge {
+    margin: 0;
+    padding-left: 20px;
+    font-weight: 600;
+    font-size: 24px;
+    color: #000;
+    font-family: "IBM Plex Mono", sans-serif;
+}
+
+.btn_edit {
+    margin-top: 20px;
+    width: 285px;
+    height: 40px;
+    border-radius: 30px;
+    background: #d9d9d9;
+    display: flex;
+}
+
+.btn-p {
+    margin: 0;
+    font-family: "IBM Plex Mono", sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: #000;
+    padding-top: 9px;
+    padding-left: 20px;
+}
+
+.btn-img {
+    width: 30px;
+    height: 30px;
+    padding-top: 5px;
+    padding-left: 8px;
+}
+
+.folow {
+    margin-top: 12px;
+}
+
+.follower {
+    display: flex;
+}
+
+.i-follower {
+    font-family: "IBM Plex Mono", sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    color: #000;
+    margin: 0;
+}
+
+.p-follower {
+    font-family: "IBM Plex Mono", sans-serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 24px;
+    color: #6a6a6a;
+    margin: 0;
+    padding-left: 5px;
+}
+
+.follow {
+    display: flex;
+}
+
+.i-follow {
+    font-family: "IBM Plex Mono", sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    color: #000;
+    margin: 0;
+}
+
+.p-follow {
+    font-family: "IBM Plex Mono", sans-serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 24px;
+    color: #6a6a6a;
+    margin: 0;
+    padding-left: 5px;
+}
+
+
+
+
+
+
+.quested {
+    margin-left: 100px;
+}
+
+.quest {
+    display: flex;
+}
+
+.created {
+    display: flex;
+    margin-top: 40px;
+}
+
+.created-p {
+    font-family: "IBM Plex Mono", sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    text-align: center;
+    color: #6a6a6a;
+    margin-top: 0;
+}
+
+.active {
+    color: #404040;
+}
+
+.created-i {
+    margin-top: 0;
+    border-radius: 22px;
+    width: 40px;
+    height: 40px;
+    background: #d9d9d9;
+    margin-left: 12px;
+}
+
+.i {
+    font-family: "IBM Plex Mono", sans-serif;
+    margin-top: 0;
+    font-weight: 600;
+    font-size: 24px;
+    color: #000;
+    margin-left: 12px;
+    margin-top: 4px;
+}
+
+.passed {
+    display: flex;
+    margin-left: 46px;
+    margin-top: 40px;
+}
+
+.passed-p {
+    font-family: "IBM Plex Mono", sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    text-align: center;
+    color: #6a6a6a;
+    margin-top: 0;
+}
+
+.passed-i {
+    margin-top: 0;
+    border-radius: 22px;
+    width: 40px;
+    height: 40px;
+    background: #d9d9d9;
+    margin-left: 12px;
+}
+
+.blcok {
+    margin-top: 20px;
+    border-radius: 30px;
+    width: 594px;
+    height: 240px;
+    background: #d9d9d9;
+}
