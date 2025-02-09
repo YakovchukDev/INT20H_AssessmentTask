@@ -5,7 +5,11 @@ using QuestPlatform.Server.Models;
 
 namespace QuestPlatform.Server.Services
 {
+<<<<<<< HEAD
     public class QuestsService : IQuestsService
+=======
+    public class QuestsService
+>>>>>>> 9f18bc24643b739e9bbb5513ca78d98132059f20
     {
         private readonly QuestPlatformDbContext _context;
 
