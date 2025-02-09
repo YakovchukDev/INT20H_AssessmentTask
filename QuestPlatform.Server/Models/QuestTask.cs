@@ -6,11 +6,12 @@ namespace QuestPlatform.Server.Models
     {
         public int Id { get; set; }
         public int PageId { get; set; }
-        public Page Page { get; set; }
         public string TaskDescription { get; set; }
         public int ResponseTypeId { get; set; }
-        public TaskResponseType ResponseType { get; set; }
 
-        public ICollection<TaskOption> TaskOptions { get; set; }
+        public Page Page { get; set; }
+        public TaskResponseType TaskResponseType { get; set; }
+        public TaskResponse TaskResponse { get; set; }
+        public List<TaskOption> TaskOptions { get; set; }
     }
 }
