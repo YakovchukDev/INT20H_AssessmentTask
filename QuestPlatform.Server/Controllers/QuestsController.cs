@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-<<<<<<< HEAD
 using QuestPlatform.Server.Models;
-=======
->>>>>>> 9f18bc24643b739e9bbb5513ca78d98132059f20
 using QuestPlatform.Server.Services;
 
 namespace QuestPlatform.Server.Controllers
@@ -11,13 +8,8 @@ namespace QuestPlatform.Server.Controllers
     [Route("api/quest")]
     public class QuestsController : ControllerBase
     {
-<<<<<<< HEAD
-        private readonly IQuestsService _questsService;
-        public QuestsController(IQuestsService questsService)
-=======
         private readonly QuestsService _questsService;
         public QuestsController(QuestsService questsService)
->>>>>>> 9f18bc24643b739e9bbb5513ca78d98132059f20
         {
             _questsService = questsService;
         }
@@ -36,7 +28,6 @@ namespace QuestPlatform.Server.Controllers
 
             return Ok(quest);
         }
-<<<<<<< HEAD
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Quest quest)
         {
@@ -66,8 +57,5 @@ namespace QuestPlatform.Server.Controllers
 
             return NoContent();
         }
-=======
-
->>>>>>> 9f18bc24643b739e9bbb5513ca78d98132059f20
     }
 }
