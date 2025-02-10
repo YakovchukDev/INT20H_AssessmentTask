@@ -1,0 +1,420 @@
+body {
+    width: 1920px;
+    height: 1080px;
+    background: #fff;
+    margin: 0;
+}
+
+header {
+    
+    width: 1920px;
+    height: 60px;
+    background: #d9d9d9;
+}
+
+main {
+    display: flex;
+}
+
+.nav {
+    margin-top: 21px;
+    margin-left: 100px;
+    box-sizing: border-box;
+    border: none;
+    width: 280px;
+    height: 530px;
+}
+
+.search {
+    
+    border-radius: 5px;
+    width: 280px;
+    height: 30px;
+    background: rgba(217, 217, 217, 0.7);
+}
+
+.search__input {
+    text-decoration: underline;
+    margin-left: 10px;
+    margin-top: 5px;
+    font-weight: 600;
+    font-size: 16px;
+    color: #444;
+    border: none;
+    background: none;
+}
+
+.search__img {
+    margin-top: 5px;
+    margin-left: 5px;
+    width: 20px;
+    height: 20px;
+}
+
+.btn {
+    margin-top: 10px;
+}
+
+.btn__input {
+    font-weight: 600;
+    font-size: 16px;
+    color: #444;
+    margin-top: 5px;
+    margin-left: 4px;
+    border: none;
+    background: none;
+}
+
+.btn__img {
+    width: 16px;
+    height: 16px;
+    margin-top: 7px;
+    margin-left: 5px;
+}
+
+.category {
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.category__label {
+    display: flex;
+    width: 150px;
+    height: 24px;
+    font-weight: 600;
+    font-size: 20px;
+    color: #000;
+    
+
+}
+
+.category__icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.category__input {
+    border-radius: 5px;
+    width: 280px;
+    height: 30px;
+    border: none;
+    background: rgba(217, 217, 217, 0.7);
+}
+
+.time {
+    margin-top: 10px;
+}
+
+.time__label {
+    display: flex;
+    width: 150px;
+    height: 24px;
+    font-weight: 600;
+    font-size: 20px;
+    color: #000;
+}
+
+.time__icon {
+    width: 30px;
+    height: 30px;
+    
+}
+
+.time__input {
+    border-radius: 5px;
+    width: 130px;
+    height: 30px;
+    background: rgba(217, 217, 217, 0.7);
+    border: none;
+    text-align: center;
+}
+
+.time__separator {
+    border-radius: 5px;
+    width: 10px;
+    height: 2px;
+    margin: 14px 5px;
+}
+
+.time__checkbox {
+    border: 1px solid #000;
+    border-radius: 5px;
+    width: 20px;
+    height: 20px;
+}
+
+.time__checkbox::placeholder{
+    font-weight: 600;
+    font-size: 14px;
+    color: #444;
+}
+
+.people {
+    margin-top: 10px;
+}
+
+.people__label {
+    display: flex;
+    width: 150px;
+    height: 24px;
+    font-weight: 600;
+    font-size: 20px;
+    color: #000;
+}
+
+.people__icon {
+    width: 30px;
+    height: 30px;
+}
+
+.people__input {
+    border-radius: 5px;
+    width: 130px;
+    height: 30px;
+    background: rgba(217, 217, 217, 0.7);
+    border: none;
+    text-align: center;
+}
+
+.people__separator {
+    border-radius: 5px;
+    width: 10px;
+    height: 2px;
+    margin: 14px 5px;
+}
+
+.difficulty__label {
+    margin-top: 10px;
+    display: flex;
+    width: 150px;
+    height: 24px;
+    font-weight: 600;
+    font-size: 20px;
+    color: #000;
+}
+
+.difficulty__icon {
+    width: 30px;
+    height: 30px;
+
+}
+
+.difficulty {
+    margin-top: 10px;
+}
+
+.difficulty__radio {
+}
+
+.stars {
+    margin-top: 10px;
+}
+
+.stars__label {
+    display: flex;
+    width: 150px;
+    height: 24px;
+    font-weight: 600;
+    font-size: 20px;
+    color: #000;
+}
+
+.stars__icon {
+    width: 30px;
+    height: 30px;
+}
+
+.stars__input {
+    border-radius: 5px;
+    width: 130px;
+    height: 30px;
+    background: rgba(217, 217, 217, 0.7);
+    border: none;
+    text-align: center;
+}
+
+.stars__separator {
+    border-radius: 5px;
+    width: 10px;
+    height: 2px;
+    margin: 14px 5px;
+}
+
+.apply__button {
+    margin-top: 10px;
+    border-radius: 10px;
+    width: 280px;
+    height: 40px;
+    background: #000;
+    font-weight: 600;
+    font-size: 26px;
+    text-align: center;
+    color: #fff;
+}
+
+.section {
+    margin-left: 20px;
+}
+
+.wrapper__img {
+    border-radius: 15px;
+    width: 700px;
+    height: 350px;
+    background: #d9d9d9;
+}
+
+.wrapper__name {
+    margin: 0;
+    font-weight: 700;
+    font-size: 30px;
+    color: #000;
+}
+
+.wrapper__parametrs {
+    display: flex;
+}
+
+.category__block {
+    border-radius: 10px;
+    width: 100px;
+    height: 30px;
+    display: flex;
+}
+
+.category__icon {
+    width: 20px;
+    height: 20px;
+}
+
+.category__text {
+    margin-top: 0;
+    font-weight: 600;
+    font-size: 14px;
+    color: #444;
+    margin-left: 5px;
+}
+
+.time__block {
+    border-radius: 10px;
+    width: 70px;
+    height: 30px;
+    display: flex;
+}
+
+.time__icon {
+    width: 17px;
+    height: 17px;
+}
+
+.time__text {
+    margin-top: 0;
+    font-weight: 600;
+    font-size: 14px;
+    color: #444;
+    margin-left: 5px;
+}
+
+.people__block {
+    border-radius: 10px;
+    width: 50px;
+    height: 30px;
+    display: flex;
+}
+
+.people__icon {
+    width: 20px;
+    height: 20px;
+}
+
+.people__text {
+    margin-top: 0;
+    font-weight: 600;
+    font-size: 14px;
+    color: #000000;
+    margin-left: 5px;
+}
+
+
+.star__block {
+    border-radius: 10px;
+    width: 66px;
+    height: 30px;
+    display: flex;
+}
+
+.star__icon {
+    width: 20px;
+    height: 20px;
+}
+
+.star__text {
+    margin-top: 0;
+    font-weight: 600;
+    font-size: 14px;
+    color: #000000;
+    margin-left: 5px;
+}
+
+.hard__block {
+    border-radius: 10px;
+    width: 160px;
+    height: 30px;
+    display: flex;
+}
+
+.hard__icon {
+    width: 20px;
+    height: 20px;
+}
+
+.tag__block {
+    width: 160px;
+    height: 30px;
+    display: flex;
+}
+
+.tag__icon {
+    width: 20px;
+    height: 20px;
+}
+
+.tag__text {
+    margin-top: 0;
+    font-weight: 600;
+    font-size: 14px;
+    color: #444;
+    margin-left: 5px;
+}
+
+.sec-1 {
+    margin-top: 21px;
+    display: flex;
+}
+.sec-2 {
+    margin-top: 20px;
+    display: flex;
+}
+
+.wrapper-1 {
+    width: 700px;
+    height: 420px;
+}
+.wrapper-2 {
+    margin-left: 20px;
+    width: 700px;
+    height: 420px;
+}
+.wrapper-3 {
+    width: 700px;
+    height: 420px;
+}
+.wrapper-4 {
+    margin-left: 20px;
+    width: 700px;
+    height: 420px;
+}
+
+.input {
+    display: flex;
+}

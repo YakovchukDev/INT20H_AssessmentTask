@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../src/find_quest.css">
+</head>
+<body>
+    <header>
+    </header>
+    
+    <main class="main">
+        <nav class="nav">
+            <div class="search">
+                <img class="search__img" src="images/search.png" alt="search">
+                <input class="search__input" type="text" placeholder="Назва квесту">
+                
+            </div>
+            
+            <div class="btn">
+                <img class="btn__img" src="images/delete.png" alt="delete">
+                <input class="btn__input" type="reset" value="Очистити фільтр">
+                
+            </div>
+    
+            <div class="category">
+                <label class="category__label">
+                    <img class="category__icon" src="images/category.png" alt="category">Категорія
+                </label><br>
+                <input class="category__input" type="text" placeholder="Категорія">
+            </div>
+    
+            <div class="time">
+                <label class="time__label">
+                    <img class="time__icon" src="images/time.png" alt="time">Час (хв)
+                </label><br>
+                <div class="input">
+                    <input class="time__input" type="number" placeholder="xxx" min="30" max="180">
+                    <img class="time__separator" src="images/-.png" alt="-">
+                    <input class="time__input" type="number" placeholder="xxx" min="30" max="180">
+                </div>
+                <br>
+                <input class="time__checkbox" type="checkbox" placeholder="Без часового ліміту">
+            </div>
+            
+            <div class="people">
+                <label class="people__label">
+                    <img class="people__icon" src="images/people.png" alt="people">Участники
+                </label><br>
+                <div class="input">
+                    <input class="people__input" type="number" placeholder="xx" min="1" max="99">
+                    <img class="people__separator" src="images/-.png" alt="-">
+                    <input class="people__input" type="number" placeholder="xx" min="1" max="99">
+
+                </div>
+            </div>
+            
+            <label class="difficulty__label">
+                <img class="difficulty__icon" src="images/hard.png" alt=""> Складність
+            </label><br>
+            <div class="difficulty">
+                <input class="difficulty__radio" type="radio" name="difficulty">
+                <input class="difficulty__radio" type="radio" name="difficulty">
+                <input class="difficulty__radio" type="radio" name="difficulty">
+                <input class="difficulty__radio" type="radio" name="difficulty">
+                <input class="difficulty__radio" type="radio" name="difficulty">
+            </div>
+    
+            <div class="stars">
+                <label class="stars__label">
+                    <img class="stars__icon" src="images/star.png" alt="star">Рейтинг
+                </label><br>
+                <div class="input">
+                    <input class="stars__input" type="number" placeholder="x.xx" min="1.00" max="5.00">
+                    <img class="stars__separator" src="images/-.png" alt="-">
+                    <input class="stars__input" type="number" placeholder="x.xx" min="1.00" max="5.00">
+
+                </div>
+            </div>
+    
+            <button class="apply__button">Застосувати</button>
+        </nav>
+    
+        <section class="section">
+            <div class="sec-1">
+                <div class="wrapper-1">
+                    <div class="wrapper__img"></div>
+                    <h2 class="wrapper__name">Назва квесту</h2>
+                    <div class="wrapper__parametrs">
+                        <div class="category__block">
+                            <img class="category__icon" src="images/category.png" alt="category">
+                            <p class="category__text">category</p>
+                        </div>
+                        <div class="time__block">
+                            <img class="time__icon" src="images/time.png" alt="time">
+                            <p class="time__text">xx</p>
+                            <p class="time__text">xx</p>
+                        </div>
+                        <div class="people__block">
+                            <img class="people__icon" src="images/people.png" alt="people">
+                            <p class="people__text">1</p>
+                        </div>
+                        <div class="star__block">
+                            <img class="star__icon" src="images/star.png" alt="star">
+                            <p class="star__text">5.00</p>
+                        </div>
+                        <div class="hard__block">
+                            <img class="hard__icon" src="images/hard.png" alt="hard">
+                            <img class="hard__icon" src="images/hard+.png" alt="hard+">
+                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+                        </div>
+                        <div class="tag__block">
+                            <img class="tag__icon" src="images/tag.png" alt="tag">
+                            <p class="tag__text">#tag1 #tag2 #tag3</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="wrapper-2">
+                    <div class="wrapper__img"></div>
+                    <h2 class="wrapper__name">Назва квесту</h2>
+                    <div class="wrapper__parametrs">
+                        <div class="category__block">
+                            <img class="category__icon" src="images/category.png" alt="category">
+                            <p class="category__text">category</p>
+                        </div>
+                        <div class="time__block">
+                            <img class="time__icon" src="images/time.png" alt="time">
+                            <p class="time__text">xx</p>
+                            <p class="time__text">xx</p>
+                        </div>
+                        <div class="people__block">
+                            <img class="people__icon" src="images/people.png" alt="people">
+                            <p class="people__text">1</p>
+                        </div>
+                        <div class="star__block">
+                            <img class="star__icon" src="images/star.png" alt="star">
+                            <p class="star__text">5.00</p>
+                        </div>
+                        <div class="hard__block">
+                            <img class="hard__icon" src="images/hard.png" alt="hard">
+                            <img class="hard__icon" src="images/hard+.png" alt="hard+">
+                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+                        </div>
+                        <div class="tag__block">
+                            <img class="tag__icon" src="images/tag.png" alt="tag">
+                            <p class="tag__text">#tag1 #tag2 #tag3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sec-2">
+                <div class="wrapper-3">
+                    <div class="wrapper__img"></div>
+                    <h2 class="wrapper__name">Назва квесту</h2>
+                    <div class="wrapper__parametrs">
+                        <div class="category__block">
+                            <img class="category__icon" src="images/category.png" alt="category">
+                            <p class="category__text">category</p>
+                        </div>
+                        <div class="time__block">
+                            <img class="time__icon" src="images/time.png" alt="time">
+                            <p class="time__text">xx</p>
+                            <p class="time__text">xx</p>
+                        </div>
+                        <div class="people__block">
+                            <img class="people__icon" src="images/people.png" alt="people">
+                            <p class="people__text">1</p>
+                        </div>
+                        <div class="star__block">
+                            <img class="star__icon" src="images/star.png" alt="star">
+                            <p class="star__text">5.00</p>
+                        </div>
+                        <div class="hard__block">
+                            <img class="hard__icon" src="images/hard.png" alt="hard">
+                            <img class="hard__icon" src="images/hard+.png" alt="hard+">
+                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+                        </div>
+                        <div class="tag__block">
+                            <img class="tag__icon" src="images/tag.png" alt="tag">
+                            <p class="tag__text">#tag1 #tag2 #tag3</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="wrapper-4">
+                    <div class="wrapper__img"></div>
+                    <h2 class="wrapper__name">Назва квесту</h2>
+                    <div class="wrapper__parametrs">
+                        <div class="category__block">
+                            <img class="category__icon" src="images/category.png" alt="category">
+                            <p class="category__text">category</p>
+                        </div>
+                        <div class="time__block">
+                            <img class="time__icon" src="images/time.png" alt="time">
+                            <p class="time__text">xx</p>
+                            <p class="time__text">xx</p>
+                        </div>
+                        <div class="people__block">
+                            <img class="people__icon" src="images/people.png" alt="people">
+                            <p class="people__text">1</p>
+                        </div>
+                        <div class="star__block">
+                            <img class="star__icon" src="images/star.png" alt="star">
+                            <p class="star__text">5.00</p>
+                        </div>
+                        <div class="hard__block">
+                            <img class="hard__icon" src="images/hard.png" alt="hard">
+                            <img class="hard__icon" src="images/hard+.png" alt="hard+">
+                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+                        </div>
+                        <div class="tag__block">
+                            <img class="tag__icon" src="images/tag.png" alt="tag">
+                            <p class="tag__text">#tag1 #tag2 #tag3</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </section>
+    </main>
+    
+    
+</body>
+</html>
