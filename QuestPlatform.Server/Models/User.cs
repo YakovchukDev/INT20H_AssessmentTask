@@ -14,6 +14,7 @@ namespace QuestPlatform.Server.Models
         public DateTime CreatedAt { get; set; }
         public Role Role { get; set; }
         public string AvatarPath { get; set; }
+        public string? RefreshToken { get; set; }
 
         public ICollection<Quest> Quests { get; set; }
         public ICollection<QuestRating> Ratings { get; set; }
