@@ -1,45 +1,25 @@
 import {FC} from "react";
-import './styles/index.sass';
-import {Route, Routes} from 'react-router';
-import HomePage from './pages/home/page.tsx';
-import AuthLayout from './pages/auth/layout.tsx';
-import LoginPage from "./pages/auth/login/page.tsx";
-import SignupPage from "./pages/auth/signup/page.tsx";
-import ProfilePage from "./pages/profile/page.tsx";
-import QuestPage from "./pages/quest/page.tsx";
-import NotFoundPage from "./pages/not-found/page.tsx";
+import {GlobalStyles, ThemeProvider} from '@mui/material';
+import theme from './theme/theme.ts';
+import {RouterProvider} from "react-router";
+import Router from "./routes";
+import './styles/index.css';
 
 const App:FC = ()=>{
     return (
-       <Routes>
-           <Route
-               index
-               element={<HomePage/>}
-           />
-           <Route
-               element={<AuthLayout/>}
-           >
-               <Route
-                   path={"/login"}
-                   element={<LoginPage/>}
-               />
-               <Route
-                   path={"/signup"}
-                   element={<SignupPage/>}
-               />
-           </Route>
-           <Route
-               path={"/profile/:id"}
-               element={<ProfilePage/>}
-           />
-           <Route
-               path={"/quest/:id"}
-               element={<QuestPage/>}
-           />
-           <Route path={"*"} element={
-               <NotFoundPage/>
-           }/>
-       </Routes>
+        <ThemeProvider theme={theme}>
+            <GlobalStyles styles={{
+                "*, ::after, ::before" : {
+                    padding : 0,
+                    margin : 0,
+                    boxSizing : 'border-box',
+                },
+                'a' : {
+                    textDecoration : 'none',
+                }
+            }}/>
+            <RouterProvider router={Router}/>
+        </ThemeProvider>
     )
 }
 

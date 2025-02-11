@@ -6,3 +6,9 @@ export type User = {
     email : string;
     password: string;
 }
+export type JwtUser = {
+    id : number;
+    nickname : string;
+    email : string;
+    password: string;
+}
