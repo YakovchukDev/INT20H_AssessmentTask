@@ -30,6 +30,8 @@ namespace QuestPlatform.Server.Services
                 Email = request.Email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
                 Role = Role.User,
+                AboutMe = request.AboutMe,
+                AvatarPath = request.AvatarPath,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -40,15 +42,22 @@ namespace QuestPlatform.Server.Services
 
         public async Task<AuthResponse> LoginUserAsync(LoginRequest request)
         {
-            User? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+            User? user = await _context.Users
+                .Include(u => u.RefreshTokens)
+                .FirstOrDefaultAsync(u => u.Email == request.Email);
             if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-                return new AuthResponse(false, string.Empty, string.Empty,  "Невірний email або пароль");
+            {
+                return new AuthResponse(false, string.Empty, string.Empty, "Невірний email або пароль");
+            }
 
             string accessToken = _tokenService.GenerateJwtToken(user);
-            string refreshToken = _tokenService.GenerateRefreshToken();
-            user.RefreshToken = refreshToken;
+            RefreshToken refreshToken = _tokenService.GenerateRefreshToken(user.Id);
 
-            return new AuthResponse(true, accessToken, refreshToken, "Авторизація успішна");
+            user.RefreshTokens ??= new List<RefreshToken>();
+            user.RefreshTokens.Add(refreshToken);
+            await _context.SaveChangesAsync();
+
+            return new AuthResponse(true, accessToken, refreshToken.Token, "Авторизація успішна");
         }
 
         public async Task LogoutUserAsync(int userId)
@@ -58,7 +67,14 @@ namespace QuestPlatform.Server.Services
 
         public async Task<string?> RefreshTokenAsync(string refreshToken)
         {
-            return await _tokenService.RefreshTokenAsync(refreshToken);
+            var token = await _context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == refreshToken);
+            if (token == null || token.ExpiryDate < DateTime.UtcNow)
+            {
+                return null;
+            }
+
+            User? user = await _context.Users.FindAsync(token.UserId);
+            return user != null ? _tokenService.GenerateJwtToken(user) : null;
         }
 
         public async Task<UserResponse?> GetProfileAsync(string username)
@@ -68,23 +84,18 @@ namespace QuestPlatform.Server.Services
                 .Include(u => u.Ratings)
                 .FirstOrDefaultAsync(u => u.Username == username);
 
-            return user == null ? null : new UserResponse
-            {
-                UserId = user.Id,
-                Username = user.Username,
-                Name = user.Name,
-            };
+            return user == null ? null : new UserResponse(user.Id, user.Username, user.Name);
         }
 
         public async Task<bool> UpdateProfileAsync(UserRequest request)
         {
-            User? user = await _context.Users.FindAsync(request.Username);
+            User? user = await _context.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
             if (user == null) return false;
             bool emailExists = await _context.Users.AnyAsync(u => u.Email == request.Email && u.Id != user.Id);
             if (emailExists) return false;
             user.Name = request.Name;
             user.Email = request.Email;
-            user.AboutMe aboutMe = request.AboutMe;
+            user.AboutMe = request.AboutMe;
             user.AvatarPath = request.AvatarPath;
             _context.Users.Update(user);
             await _context.SaveChangesAsync();

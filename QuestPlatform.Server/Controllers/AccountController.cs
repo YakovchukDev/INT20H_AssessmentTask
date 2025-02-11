@@ -43,15 +43,20 @@ namespace QuestPlatform.Server.Controllers
         [HttpPost("refresh")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
         {
-            string newToken = await _accountService.RefreshTokenAsync(request.RefreshToken);
-            return newToken != null ? Ok(new { token = newToken }) : Unauthorized(new { message = "Недійсний токен" });
+            var newToken = await _accountService.RefreshTokenAsync(request.RefreshToken);
+            if (newToken == null)
+            {
+                return Unauthorized(new { message = "Недійсний токен" });
+            }
+
+            return Ok(new { token = newToken });
         }
 
         [Authorize]
         [HttpGet("profile/{username}")]
         public async Task<IActionResult> GetProfile(string username)
         {
-            UserResponse profile = await _accountService.GetProfileAsync(username);
+            UserResponse? profile = await _accountService.GetProfileAsync(username);
             return profile != null ? Ok(profile) : NotFound(new { message = "Профіль не знайдено" });
         }
 
@@ -62,9 +67,9 @@ namespace QuestPlatform.Server.Controllers
             string? authenticatedUsername = User.FindFirst(ClaimTypes.Name)?.Value;
 
             if (authenticatedUsername == null || authenticatedUsername != request.Username)
-                return Forbid("Ви не можете редагувати чужий профіль");
+                return Unauthorized("Ви не можете редагувати чужий профіль");
 
-            bool success = await _accountService.UpdateProfileAsync(authenticatedUsername, request);
+            bool success = await _accountService.UpdateProfileAsync(request);
             return success
                 ? Ok(new { message = "Профіль успішно оновлено" })
                 : NotFound(new { message = "Помилка оновлення профілю" });

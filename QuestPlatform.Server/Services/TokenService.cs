@@ -40,23 +40,20 @@ namespace QuestPlatform.Server.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public async Task<string?> RefreshTokenAsync(string refreshToken)
-        {
-            var token = await _context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == refreshToken);
-            if (token == null || token.ExpiryDate < DateTime.UtcNow) return null;
-
-            User? user = await _context.Users.FindAsync(token.UserId);
-            return user != null ? GenerateJwtToken(user) : null;
-        }
-
-        public string GenerateRefreshToken()
+        public RefreshToken GenerateRefreshToken(int userId)
         {
             byte[] randomBytes = new byte[32];
             using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(randomBytes);
             }
-            return Convert.ToBase64String(randomBytes);
+
+            return new RefreshToken
+            {
+                Token = Convert.ToBase64String(randomBytes),
+                UserId = userId,
+                ExpiryDate = DateTime.UtcNow.AddDays(7)
+            };
         }
 
         public async Task InvalidateUserTokensAsync(int userId)

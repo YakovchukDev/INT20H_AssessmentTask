@@ -5,8 +5,7 @@ namespace QuestPlatform.Server.Services
     public interface ITokenService
     {
         string GenerateJwtToken(User user);
-        Task<string?> RefreshTokenAsync(string refreshToken);
-        string GenerateRefreshToken();
+        RefreshToken GenerateRefreshToken(int userId);
         Task InvalidateUserTokensAsync(int userId);
     }
 }

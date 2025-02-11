@@ -14,6 +14,7 @@ namespace QuestPlatform.Server.Data
         public DbSet<MediaFile> MediaFiles { get; set; }
         public DbSet<Quest> Quests { get; set; }
         public DbSet<Page> Pages { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<PageElement> PageElements { get; set; }
         public DbSet<QuestRating> QuestRatings { get; set; }
         public DbSet<QuestTask> Tasks { get; set; }
@@ -43,6 +44,21 @@ namespace QuestPlatform.Server.Data
                 .WithMany(q => q.Pages)
                 .HasForeignKey(p => p.QuestId)
                 .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<RefreshToken>()
+                .HasOne(rt => rt.User)
+                .WithMany(u => u.RefreshTokens)
+                .HasForeignKey(rt => rt.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<RefreshToken>()
+                .Property(rt => rt.Token)
+                .IsRequired()
+                .HasMaxLength(500);
+
+            modelBuilder.Entity<RefreshToken>()
+                .Property(rt => rt.ExpiryDate)
+                .IsRequired();
+
 
             // PageElement relationships
             modelBuilder.Entity<PageElement>()

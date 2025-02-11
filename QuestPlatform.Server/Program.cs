@@ -28,7 +28,7 @@ builder.Services.AddDbContext<QuestPlatformDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var configuration = builder.Configuration;
-var jwtKey = configuration["Jwt:SecretKey"];
+var jwtKey = configuration["Jwt:Key"];
 var jwtIssuer = configuration["Jwt:Issuer"];
 var jwtAudience = configuration["Jwt:Audience"];
 
