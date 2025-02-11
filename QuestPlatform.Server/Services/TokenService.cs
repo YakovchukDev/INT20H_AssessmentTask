@@ -59,12 +59,14 @@ namespace QuestPlatform.Server.Services
             return Convert.ToBase64String(randomBytes);
         }
 
-
         public async Task InvalidateUserTokensAsync(int userId)
         {
-            RefreshTokens? tokens = _context.RefreshTokens.Where(t => t.UserId == userId);
-            _context.RefreshTokens.RemoveRange(tokens);
-            await _context.SaveChangesAsync();
+            var tokens = await _context.RefreshTokens.Where(t => t.UserId == userId).ToListAsync();
+            if (tokens.Any())
+            {
+                _context.RefreshTokens.RemoveRange(tokens);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

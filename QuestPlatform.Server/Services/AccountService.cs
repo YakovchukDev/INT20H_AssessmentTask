@@ -61,36 +61,31 @@ namespace QuestPlatform.Server.Services
             return await _tokenService.RefreshTokenAsync(refreshToken);
         }
 
-        public async Task<UserResponse?> GetProfileAsync(int userId)
+        public async Task<UserResponse?> GetProfileAsync(string username)
         {
             User? user = await _context.Users
                 .Include(u => u.Quests)
                 .Include(u => u.Ratings)
-                .FirstOrDefaultAsync(u => u.Id == userId);
+                .FirstOrDefaultAsync(u => u.Username == username);
 
             return user == null ? null : new UserResponse
             {
                 UserId = user.Id,
                 Username = user.Username,
-                Role = user.Role.ToString(),
                 Name = user.Name,
-                Email = user.Email,
-                AvatarPath = user.AvatarPath,
-                Quests = user.Quests,
-                Ratings = user.Ratings
             };
         }
 
-        public async Task<bool> UpdateProfileAsync(int userId, UserRequest request)
+        public async Task<bool> UpdateProfileAsync(UserRequest request)
         {
-            User? user = await _context.Users.FindAsync(userId);
+            User? user = await _context.Users.FindAsync(request.Username);
             if (user == null) return false;
-
+            bool emailExists = await _context.Users.AnyAsync(u => u.Email == request.Email && u.Id != user.Id);
+            if (emailExists) return false;
             user.Name = request.Name;
-            user.Username = request.Username;
             user.Email = request.Email;
+            user.AboutMe aboutMe = request.AboutMe;
             user.AvatarPath = request.AvatarPath;
-
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
             return true;

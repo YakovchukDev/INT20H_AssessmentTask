@@ -48,25 +48,28 @@ namespace QuestPlatform.Server.Controllers
         }
 
         [Authorize]
-        [HttpGet("profile/{id}")]
-        public async Task<IActionResult> GetProfile(int id)
+        [HttpGet("profile/{username}")]
+        public async Task<IActionResult> GetProfile(string username)
         {
-            UserResponse profile = await _accountService.GetProfileAsync(id);
+            UserResponse profile = await _accountService.GetProfileAsync(username);
             return profile != null ? Ok(profile) : NotFound(new { message = "Профіль не знайдено" });
         }
 
         [Authorize]
-        [HttpPut("profile/update/{id}")]
-        public async Task<IActionResult> UpdateProfile(int id, [FromBody] UserRequest request)
+        [HttpPut("profile/update")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UserRequest request)
         {
-            if (request.UserId != id)
+            string? authenticatedUsername = User.FindFirst(ClaimTypes.Name)?.Value;
+
+            if (authenticatedUsername == null || authenticatedUsername != request.Username)
                 return Forbid("Ви не можете редагувати чужий профіль");
 
-            bool success = await _accountService.UpdateProfileAsync(id, request);
-            return success 
-                ? Ok(new { message = "Профіль успішно оновлено" }) 
+            bool success = await _accountService.UpdateProfileAsync(authenticatedUsername, request);
+            return success
+                ? Ok(new { message = "Профіль успішно оновлено" })
                 : NotFound(new { message = "Помилка оновлення профілю" });
         }
+
     }
 }
 
