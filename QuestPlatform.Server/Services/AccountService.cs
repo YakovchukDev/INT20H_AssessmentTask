@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 using QuestPlatform.Server.Data;
 using QuestPlatform.Server.Enums;
 using QuestPlatform.Server.Models;
+using static QuestPlatform.Server.Models.RegistrationRequest;
 
 namespace QuestPlatform.Server.Services
 {
@@ -21,9 +24,9 @@ namespace QuestPlatform.Server.Services
         public async Task<RegisterResponse> RegisterUserAsync(RegistrationRequest request)
         {
             if (await _context.Users.AnyAsync(u => u.Email == request.Email))
-                return new RegisterResponse(false, "Користувач із такою поштою вже існує", 0);
+                return new RegisterResponse(false, "Користувач із такою поштою вже існує");
             if (await _context.Users.AnyAsync(u => u.Username == request.Username))
-                return new RegisterResponse(false, "Користувач із таким Username існує", 0);
+                return new RegisterResponse(false, "Користувач із таким Username існує");
 
             User? newUser = new User
             {
@@ -32,14 +35,12 @@ namespace QuestPlatform.Server.Services
                 Email = request.Email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
                 Role = Role.User,
-                AboutMe = request.AboutMe,
-                AvatarPath = request.AvatarPath,
                 CreatedAt = DateTime.UtcNow
             };
 
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
-            return new RegisterResponse(true, "Реєстрація успішна", newUser.Id);
+            return new RegisterResponse(true, "Реєстрація успішна");
         }
 
         public async Task<AuthResponse> LoginUserAsync(LoginRequest request)
@@ -79,14 +80,14 @@ namespace QuestPlatform.Server.Services
             return user != null ? _tokenService.GenerateJwtToken(user) : null;
         }
 
-        public async Task<UserResponse?> GetProfileAsync(string username)
+        public async Task<UserDTO?> GetProfileAsync(string username)
         {
             User? user = await _context.Users
                 .Include(u => u.Quests)
                 .Include(u => u.Ratings)
                 .FirstOrDefaultAsync(u => u.Username == username);
 
-            return user == null ? null : new UserResponse(user.Id, user.Username, user.Name);
+            return user == null ? null : new UserDTO(user.Id, user.Username, user.Name);
         }
 
         public async Task<bool> UpdateProfileAsync(UserRequest request)
@@ -97,11 +98,49 @@ namespace QuestPlatform.Server.Services
             if (emailExists) return false;
             user.Name = request.Name;
             user.Email = request.Email;
-            user.AboutMe = request.AboutMe;
-            user.AvatarPath = request.AvatarPath;
+            if (request.AboutMe != null)
+            {
+                user.AboutMe = request.AboutMe;
+            }
+            if (request.AvatarPath != null)
+            {
+                user.AvatarPath = request.AvatarPath;
+            }
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<List<UserQuestHistoryDTO>> GetCompletedQuestsAsync(string username)
+        {
+            User? user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Username == username);
+
+            if (user == null) return new List<UserQuestHistoryDTO>();
+
+            return await _context.UserQuestHistories
+                .Where(qh => qh.UserId == user.Id)
+                .Select(qh => new UserQuestHistoryDTO(
+                    qh.Quest.Id,
+                    qh.Quest.Title,
+                    qh.Status,
+                    qh.TimeSpent,
+                    qh.Step
+                ))
+                .ToListAsync();
+        }
+
+        public async Task<List<CreatedQuestDTO>> GetCreatedQuestsAsync(string username)
+        {
+            User? user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Username == username);
+
+            if (user == null) return new List<CreatedQuestDTO>();
+
+            return await _context.Quests
+                .Where(q => q.AuthorId == user.Id)
+                .Select(q => new CreatedQuestDTO(q.Id, q.Title, q.CreatedAt))
+                .ToListAsync();
         }
     }
 }

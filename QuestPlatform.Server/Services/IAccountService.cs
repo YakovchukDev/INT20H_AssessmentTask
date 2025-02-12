@@ -1,4 +1,5 @@
 ﻿using QuestPlatform.Server.Models;
+using static QuestPlatform.Server.Models.RegistrationRequest;
 
 namespace QuestPlatform.Server.Services
 {
@@ -8,8 +9,9 @@ namespace QuestPlatform.Server.Services
         Task<AuthResponse> LoginUserAsync(LoginRequest request);
         Task LogoutUserAsync(int userId);
         Task<string?> RefreshTokenAsync(string refreshToken);
-        Task<UserResponse?> GetProfileAsync(string username);
+        Task<UserDTO?> GetProfileAsync(string username);
         Task<bool> UpdateProfileAsync(UserRequest request);
+        Task<List<UserQuestHistoryDTO>> GetCompletedQuestsAsync(string username);
+        Task<List<CreatedQuestDTO>> GetCreatedQuestsAsync(string username);
     }
-
 }

@@ -3,6 +3,8 @@ using QuestPlatform.Server.Models;
 using QuestPlatform.Server.Services;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using static QuestPlatform.Server.Models.RegistrationRequest;
+using Microsoft.EntityFrameworkCore;
 
 namespace QuestPlatform.Server.Controllers
 {
@@ -56,7 +58,7 @@ namespace QuestPlatform.Server.Controllers
         [HttpGet("profile/{username}")]
         public async Task<IActionResult> GetProfile(string username)
         {
-            UserResponse? profile = await _accountService.GetProfileAsync(username);
+            UserDTO? profile = await _accountService.GetProfileAsync(username);
             return profile != null ? Ok(profile) : NotFound(new { message = "Профіль не знайдено" });
         }
 
@@ -75,6 +77,22 @@ namespace QuestPlatform.Server.Controllers
                 : NotFound(new { message = "Помилка оновлення профілю" });
         }
 
+        [HttpGet("{username}/quests")]
+        public async Task<IActionResult> GetUserQuests(string username)
+        {
+            var completedQuests = await _accountService.GetCompletedQuestsAsync(username);
+            var createdQuests = await _accountService.GetCreatedQuestsAsync(username);
+
+            if (!completedQuests.Any() && !createdQuests.Any())
+            {
+                return NotFound(new { message = "User not found or no quests available." });
+            }
+            return Ok(new
+            {
+                CompletedQuests = completedQuests,
+                CreatedQuests = createdQuests
+            });
+        }
     }
 }
 
