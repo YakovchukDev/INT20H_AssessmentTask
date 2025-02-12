@@ -5,7 +5,7 @@
 -- Dumped from database version 17.2
 -- Dumped by pg_dump version 17.2
 
--- Started on 2025-02-09 11:38:01
+-- Started on 2025-02-12 20:54:51
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -53,7 +53,7 @@ CREATE SEQUENCE public."Categories_Id_seq"
 ALTER SEQUENCE public."Categories_Id_seq" OWNER TO postgres;
 
 --
--- TOC entry 5003 (class 0 OID 0)
+-- TOC entry 5015 (class 0 OID 0)
 -- Dependencies: 238
 -- Name: Categories_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -68,7 +68,6 @@ ALTER SEQUENCE public."Categories_Id_seq" OWNED BY public."Categories"."Id";
 
 CREATE TABLE public."MediaFiles" (
     "Id" integer NOT NULL,
-    "FileName" text NOT NULL,
     "FileType" text DEFAULT 'None'::text NOT NULL,
     "FilePath" text NOT NULL
 );
@@ -94,7 +93,7 @@ CREATE SEQUENCE public."MediaFiles_Id_seq"
 ALTER SEQUENCE public."MediaFiles_Id_seq" OWNER TO postgres;
 
 --
--- TOC entry 5004 (class 0 OID 0)
+-- TOC entry 5016 (class 0 OID 0)
 -- Dependencies: 219
 -- Name: MediaFiles_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -113,8 +112,7 @@ CREATE TABLE public."PageElements" (
     "ContentType" text DEFAULT 'Text'::text NOT NULL,
     "Content" jsonb,
     "MediaFileId" integer,
-    "Order" integer NOT NULL,
-    "Alignment" text DEFAULT 'Full'::text
+    "Order" numeric(4,1) NOT NULL
 );
 
 
@@ -137,7 +135,7 @@ CREATE SEQUENCE public."PageElements_Id_seq"
 ALTER SEQUENCE public."PageElements_Id_seq" OWNER TO postgres;
 
 --
--- TOC entry 5005 (class 0 OID 0)
+-- TOC entry 5017 (class 0 OID 0)
 -- Dependencies: 225
 -- Name: PageElements_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -177,7 +175,7 @@ CREATE SEQUENCE public."Pages_Id_seq"
 ALTER SEQUENCE public."Pages_Id_seq" OWNER TO postgres;
 
 --
--- TOC entry 5006 (class 0 OID 0)
+-- TOC entry 5018 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: Pages_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -219,7 +217,7 @@ CREATE SEQUENCE public."QuestRatings_Id_seq"
 ALTER SEQUENCE public."QuestRatings_Id_seq" OWNER TO postgres;
 
 --
--- TOC entry 5007 (class 0 OID 0)
+-- TOC entry 5019 (class 0 OID 0)
 -- Dependencies: 227
 -- Name: QuestRatings_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -250,8 +248,7 @@ ALTER TABLE public."QuestTasks" OWNER TO postgres;
 CREATE TABLE public."QuestTexts" (
     "Id" integer NOT NULL,
     "Text" text NOT NULL,
-    "Color" text NOT NULL,
-    CONSTRAINT check_color_format CHECK (('Color'::text ~ '^#[0-9A-Fa-f]{6}$'::text))
+    "Color" text NOT NULL
 );
 
 
@@ -274,7 +271,7 @@ CREATE SEQUENCE public."QuestText_Id_seq"
 ALTER SEQUENCE public."QuestText_Id_seq" OWNER TO postgres;
 
 --
--- TOC entry 5008 (class 0 OID 0)
+-- TOC entry 5020 (class 0 OID 0)
 -- Dependencies: 240
 -- Name: QuestText_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -300,7 +297,8 @@ CREATE TABLE public."Quests" (
     "Difficulty" integer NOT NULL,
     "Tags" text[],
     "TitleId" integer NOT NULL,
-    "DescriptionId" integer NOT NULL
+    "DescriptionId" integer NOT NULL,
+    "Visible" boolean DEFAULT false NOT NULL
 );
 
 
@@ -323,12 +321,52 @@ CREATE SEQUENCE public."Quests_Id_seq"
 ALTER SEQUENCE public."Quests_Id_seq" OWNER TO postgres;
 
 --
--- TOC entry 5009 (class 0 OID 0)
+-- TOC entry 5021 (class 0 OID 0)
 -- Dependencies: 221
 -- Name: Quests_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE public."Quests_Id_seq" OWNED BY public."Quests"."Id";
+
+
+--
+-- TOC entry 243 (class 1259 OID 16950)
+-- Name: RefreshToken; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."RefreshToken" (
+    "Id" integer NOT NULL,
+    "UserId" integer NOT NULL,
+    "Token" text NOT NULL,
+    "ExpiryDate" date NOT NULL
+);
+
+
+ALTER TABLE public."RefreshToken" OWNER TO postgres;
+
+--
+-- TOC entry 242 (class 1259 OID 16949)
+-- Name: RefreshToken_Id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."RefreshToken_Id_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public."RefreshToken_Id_seq" OWNER TO postgres;
+
+--
+-- TOC entry 5022 (class 0 OID 0)
+-- Dependencies: 242
+-- Name: RefreshToken_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public."RefreshToken_Id_seq" OWNED BY public."RefreshToken"."Id";
 
 
 --
@@ -338,8 +376,7 @@ ALTER SEQUENCE public."Quests_Id_seq" OWNED BY public."Quests"."Id";
 
 CREATE TABLE public."TaskResponseTypes" (
     "Id" integer NOT NULL,
-    "ResponseType" text DEFAULT 'Text'::text NOT NULL,
-    "Description" text
+    "ResponseType" text DEFAULT 'Text'::text
 );
 
 
@@ -362,7 +399,7 @@ CREATE SEQUENCE public."ResponseTypes_Id_seq"
 ALTER SEQUENCE public."ResponseTypes_Id_seq" OWNER TO postgres;
 
 --
--- TOC entry 5010 (class 0 OID 0)
+-- TOC entry 5023 (class 0 OID 0)
 -- Dependencies: 231
 -- Name: ResponseTypes_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -401,7 +438,7 @@ CREATE SEQUENCE public."TaskOptions_Id_seq"
 ALTER SEQUENCE public."TaskOptions_Id_seq" OWNER TO postgres;
 
 --
--- TOC entry 5011 (class 0 OID 0)
+-- TOC entry 5024 (class 0 OID 0)
 -- Dependencies: 233
 -- Name: TaskOptions_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -442,7 +479,7 @@ CREATE SEQUENCE public."Tasks_Id_seq"
 ALTER SEQUENCE public."Tasks_Id_seq" OWNER TO postgres;
 
 --
--- TOC entry 5012 (class 0 OID 0)
+-- TOC entry 5025 (class 0 OID 0)
 -- Dependencies: 235
 -- Name: Tasks_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -460,7 +497,8 @@ CREATE TABLE public."UserQuestHistory" (
     "UserId" integer NOT NULL,
     "QuestId" integer NOT NULL,
     "Status" text DEFAULT 'InProgress'::text NOT NULL,
-    "TimeSpent" interval NOT NULL
+    "TimeSpent" interval NOT NULL,
+    "Step" integer DEFAULT 1 NOT NULL
 );
 ALTER TABLE ONLY public."UserQuestHistory" ALTER COLUMN "Status" SET STORAGE PLAIN;
 
@@ -484,7 +522,7 @@ CREATE SEQUENCE public."UserQuestHistory_Id_seq"
 ALTER SEQUENCE public."UserQuestHistory_Id_seq" OWNER TO postgres;
 
 --
--- TOC entry 5013 (class 0 OID 0)
+-- TOC entry 5026 (class 0 OID 0)
 -- Dependencies: 229
 -- Name: UserQuestHistory_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -507,7 +545,8 @@ CREATE TABLE public."Users" (
     "Role" text DEFAULT 'User'::text NOT NULL,
     "AvatarPath" text,
     "AboutMe" text,
-    "Rating" numeric(3,2)
+    "Rating" numeric(3,2),
+    "RefreshTokenIds" integer[]
 );
 ALTER TABLE ONLY public."Users" ALTER COLUMN "AvatarPath" SET STORAGE PLAIN;
 
@@ -531,7 +570,7 @@ CREATE SEQUENCE public."Users_Id_seq"
 ALTER SEQUENCE public."Users_Id_seq" OWNER TO postgres;
 
 --
--- TOC entry 5014 (class 0 OID 0)
+-- TOC entry 5027 (class 0 OID 0)
 -- Dependencies: 217
 -- Name: Users_Id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -540,7 +579,7 @@ ALTER SEQUENCE public."Users_Id_seq" OWNED BY public."Users"."Id";
 
 
 --
--- TOC entry 4774 (class 2604 OID 16884)
+-- TOC entry 4780 (class 2604 OID 16884)
 -- Name: Categories Id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -548,7 +587,7 @@ ALTER TABLE ONLY public."Categories" ALTER COLUMN "Id" SET DEFAULT nextval('publ
 
 
 --
--- TOC entry 4757 (class 2604 OID 16667)
+-- TOC entry 4762 (class 2604 OID 16667)
 -- Name: MediaFiles Id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -556,7 +595,7 @@ ALTER TABLE ONLY public."MediaFiles" ALTER COLUMN "Id" SET DEFAULT nextval('publ
 
 
 --
--- TOC entry 4764 (class 2604 OID 16712)
+-- TOC entry 4770 (class 2604 OID 16712)
 -- Name: PageElements Id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -564,7 +603,7 @@ ALTER TABLE ONLY public."PageElements" ALTER COLUMN "Id" SET DEFAULT nextval('pu
 
 
 --
--- TOC entry 4763 (class 2604 OID 16698)
+-- TOC entry 4769 (class 2604 OID 16698)
 -- Name: Pages Id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -572,7 +611,7 @@ ALTER TABLE ONLY public."Pages" ALTER COLUMN "Id" SET DEFAULT nextval('public."P
 
 
 --
--- TOC entry 4767 (class 2604 OID 16732)
+-- TOC entry 4772 (class 2604 OID 16732)
 -- Name: QuestRatings Id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -580,7 +619,7 @@ ALTER TABLE ONLY public."QuestRatings" ALTER COLUMN "Id" SET DEFAULT nextval('pu
 
 
 --
--- TOC entry 4773 (class 2604 OID 16844)
+-- TOC entry 4779 (class 2604 OID 16844)
 -- Name: QuestTasks Id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -588,7 +627,7 @@ ALTER TABLE ONLY public."QuestTasks" ALTER COLUMN "Id" SET DEFAULT nextval('publ
 
 
 --
--- TOC entry 4775 (class 2604 OID 16910)
+-- TOC entry 4781 (class 2604 OID 16910)
 -- Name: QuestTexts Id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -596,7 +635,7 @@ ALTER TABLE ONLY public."QuestTexts" ALTER COLUMN "Id" SET DEFAULT nextval('publ
 
 
 --
--- TOC entry 4759 (class 2604 OID 16676)
+-- TOC entry 4764 (class 2604 OID 16676)
 -- Name: Quests Id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -604,7 +643,15 @@ ALTER TABLE ONLY public."Quests" ALTER COLUMN "Id" SET DEFAULT nextval('public."
 
 
 --
--- TOC entry 4772 (class 2604 OID 16820)
+-- TOC entry 4782 (class 2604 OID 16953)
+-- Name: RefreshToken Id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."RefreshToken" ALTER COLUMN "Id" SET DEFAULT nextval('public."RefreshToken_Id_seq"'::regclass);
+
+
+--
+-- TOC entry 4778 (class 2604 OID 16820)
 -- Name: TaskOptions Id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -612,7 +659,7 @@ ALTER TABLE ONLY public."TaskOptions" ALTER COLUMN "Id" SET DEFAULT nextval('pub
 
 
 --
--- TOC entry 4770 (class 2604 OID 16809)
+-- TOC entry 4776 (class 2604 OID 16809)
 -- Name: TaskResponseTypes Id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -620,7 +667,7 @@ ALTER TABLE ONLY public."TaskResponseTypes" ALTER COLUMN "Id" SET DEFAULT nextva
 
 
 --
--- TOC entry 4768 (class 2604 OID 16782)
+-- TOC entry 4773 (class 2604 OID 16782)
 -- Name: UserQuestHistory Id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -628,7 +675,7 @@ ALTER TABLE ONLY public."UserQuestHistory" ALTER COLUMN "Id" SET DEFAULT nextval
 
 
 --
--- TOC entry 4754 (class 2604 OID 16653)
+-- TOC entry 4759 (class 2604 OID 16653)
 -- Name: Users Id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -636,7 +683,7 @@ ALTER TABLE ONLY public."Users" ALTER COLUMN "Id" SET DEFAULT nextval('public."U
 
 
 --
--- TOC entry 4995 (class 0 OID 16881)
+-- TOC entry 5005 (class 0 OID 16881)
 -- Dependencies: 239
 -- Data for Name: Categories; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -646,27 +693,29 @@ COPY public."Categories" ("Id", "Name") FROM stdin;
 
 
 --
--- TOC entry 4976 (class 0 OID 16664)
+-- TOC entry 4986 (class 0 OID 16664)
 -- Dependencies: 220
 -- Data for Name: MediaFiles; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."MediaFiles" ("Id", "FileName", "FileType", "FilePath") FROM stdin;
+COPY public."MediaFiles" ("Id", "FileType", "FilePath") FROM stdin;
+8	Image	D:\\Reposetories\\INT20H_AssessmentTask\\QuestPlatform.Server\\wwwroot\\Previews\\006..jpg
+9	Image	D:\\Reposetories\\INT20H_AssessmentTask\\QuestPlatform.Server\\wwwroot\\Previews\\003..png
 \.
 
 
 --
--- TOC entry 4982 (class 0 OID 16709)
+-- TOC entry 4992 (class 0 OID 16709)
 -- Dependencies: 226
 -- Data for Name: PageElements; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."PageElements" ("Id", "PageId", "ContentType", "Content", "MediaFileId", "Order", "Alignment") FROM stdin;
+COPY public."PageElements" ("Id", "PageId", "ContentType", "Content", "MediaFileId", "Order") FROM stdin;
 \.
 
 
 --
--- TOC entry 4980 (class 0 OID 16695)
+-- TOC entry 4990 (class 0 OID 16695)
 -- Dependencies: 224
 -- Data for Name: Pages; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -676,7 +725,7 @@ COPY public."Pages" ("Id", "QuestId", "PageNumber", "Title") FROM stdin;
 
 
 --
--- TOC entry 4984 (class 0 OID 16729)
+-- TOC entry 4994 (class 0 OID 16729)
 -- Dependencies: 228
 -- Data for Name: QuestRatings; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -686,7 +735,7 @@ COPY public."QuestRatings" ("Id", "QuestId", "UserId", "Rating", "Review") FROM 
 
 
 --
--- TOC entry 4992 (class 0 OID 16841)
+-- TOC entry 5002 (class 0 OID 16841)
 -- Dependencies: 236
 -- Data for Name: QuestTasks; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -696,7 +745,7 @@ COPY public."QuestTasks" ("Id", "PageId", "TaskDescription", "ResponseTypeId") F
 
 
 --
--- TOC entry 4997 (class 0 OID 16907)
+-- TOC entry 5007 (class 0 OID 16907)
 -- Dependencies: 241
 -- Data for Name: QuestTexts; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -706,17 +755,27 @@ COPY public."QuestTexts" ("Id", "Text", "Color") FROM stdin;
 
 
 --
--- TOC entry 4978 (class 0 OID 16673)
+-- TOC entry 4988 (class 0 OID 16673)
 -- Dependencies: 222
 -- Data for Name: Quests; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Quests" ("Id", "AuthorId", "Rating", "CreatedAt", "UpdatedAt", "PreviewMediaFileId", "Timer", "CategoryId", "Participants", "Difficulty", "Tags", "TitleId", "DescriptionId") FROM stdin;
+COPY public."Quests" ("Id", "AuthorId", "Rating", "CreatedAt", "UpdatedAt", "PreviewMediaFileId", "Timer", "CategoryId", "Participants", "Difficulty", "Tags", "TitleId", "DescriptionId", "Visible") FROM stdin;
 \.
 
 
 --
--- TOC entry 4990 (class 0 OID 16817)
+-- TOC entry 5009 (class 0 OID 16950)
+-- Dependencies: 243
+-- Data for Name: RefreshToken; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."RefreshToken" ("Id", "UserId", "Token", "ExpiryDate") FROM stdin;
+\.
+
+
+--
+-- TOC entry 5000 (class 0 OID 16817)
 -- Dependencies: 234
 -- Data for Name: TaskOptions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -726,17 +785,17 @@ COPY public."TaskOptions" ("Id", "TaskId", "OptionText") FROM stdin;
 
 
 --
--- TOC entry 4988 (class 0 OID 16806)
+-- TOC entry 4998 (class 0 OID 16806)
 -- Dependencies: 232
 -- Data for Name: TaskResponseTypes; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."TaskResponseTypes" ("Id", "ResponseType", "Description") FROM stdin;
+COPY public."TaskResponseTypes" ("Id", "ResponseType") FROM stdin;
 \.
 
 
 --
--- TOC entry 4993 (class 0 OID 16859)
+-- TOC entry 5003 (class 0 OID 16859)
 -- Dependencies: 237
 -- Data for Name: TaskResponses; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -746,45 +805,45 @@ COPY public."TaskResponses" ("Id", "TaskId", "ResponseTypeId", "Answer ", "Addit
 
 
 --
--- TOC entry 4986 (class 0 OID 16779)
+-- TOC entry 4996 (class 0 OID 16779)
 -- Dependencies: 230
 -- Data for Name: UserQuestHistory; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."UserQuestHistory" ("Id", "UserId", "QuestId", "Status", "TimeSpent") FROM stdin;
+COPY public."UserQuestHistory" ("Id", "UserId", "QuestId", "Status", "TimeSpent", "Step") FROM stdin;
 \.
 
 
 --
--- TOC entry 4974 (class 0 OID 16650)
+-- TOC entry 4984 (class 0 OID 16650)
 -- Dependencies: 218
 -- Data for Name: Users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."Users" ("Id", "Name", "Username", "Email", "PasswordHash", "CreatedAt", "Role", "AvatarPath", "AboutMe", "Rating") FROM stdin;
+COPY public."Users" ("Id", "Name", "Username", "Email", "PasswordHash", "CreatedAt", "Role", "AvatarPath", "AboutMe", "Rating", "RefreshTokenIds") FROM stdin;
 \.
 
 
 --
--- TOC entry 5015 (class 0 OID 0)
+-- TOC entry 5028 (class 0 OID 0)
 -- Dependencies: 238
 -- Name: Categories_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Categories_Id_seq"', 1, false);
+SELECT pg_catalog.setval('public."Categories_Id_seq"', 8, true);
 
 
 --
--- TOC entry 5016 (class 0 OID 0)
+-- TOC entry 5029 (class 0 OID 0)
 -- Dependencies: 219
 -- Name: MediaFiles_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."MediaFiles_Id_seq"', 1, false);
+SELECT pg_catalog.setval('public."MediaFiles_Id_seq"', 9, true);
 
 
 --
--- TOC entry 5017 (class 0 OID 0)
+-- TOC entry 5030 (class 0 OID 0)
 -- Dependencies: 225
 -- Name: PageElements_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -793,7 +852,7 @@ SELECT pg_catalog.setval('public."PageElements_Id_seq"', 1, false);
 
 
 --
--- TOC entry 5018 (class 0 OID 0)
+-- TOC entry 5031 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: Pages_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -802,7 +861,7 @@ SELECT pg_catalog.setval('public."Pages_Id_seq"', 1, false);
 
 
 --
--- TOC entry 5019 (class 0 OID 0)
+-- TOC entry 5032 (class 0 OID 0)
 -- Dependencies: 227
 -- Name: QuestRatings_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -811,25 +870,34 @@ SELECT pg_catalog.setval('public."QuestRatings_Id_seq"', 1, false);
 
 
 --
--- TOC entry 5020 (class 0 OID 0)
+-- TOC entry 5033 (class 0 OID 0)
 -- Dependencies: 240
 -- Name: QuestText_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."QuestText_Id_seq"', 1, false);
+SELECT pg_catalog.setval('public."QuestText_Id_seq"', 12, true);
 
 
 --
--- TOC entry 5021 (class 0 OID 0)
+-- TOC entry 5034 (class 0 OID 0)
 -- Dependencies: 221
 -- Name: Quests_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Quests_Id_seq"', 2, true);
+SELECT pg_catalog.setval('public."Quests_Id_seq"', 4, true);
 
 
 --
--- TOC entry 5022 (class 0 OID 0)
+-- TOC entry 5035 (class 0 OID 0)
+-- Dependencies: 242
+-- Name: RefreshToken_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."RefreshToken_Id_seq"', 1, false);
+
+
+--
+-- TOC entry 5036 (class 0 OID 0)
 -- Dependencies: 231
 -- Name: ResponseTypes_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -838,7 +906,7 @@ SELECT pg_catalog.setval('public."ResponseTypes_Id_seq"', 1, false);
 
 
 --
--- TOC entry 5023 (class 0 OID 0)
+-- TOC entry 5037 (class 0 OID 0)
 -- Dependencies: 233
 -- Name: TaskOptions_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -847,7 +915,7 @@ SELECT pg_catalog.setval('public."TaskOptions_Id_seq"', 1, false);
 
 
 --
--- TOC entry 5024 (class 0 OID 0)
+-- TOC entry 5038 (class 0 OID 0)
 -- Dependencies: 235
 -- Name: Tasks_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -856,7 +924,7 @@ SELECT pg_catalog.setval('public."Tasks_Id_seq"', 1, false);
 
 
 --
--- TOC entry 5025 (class 0 OID 0)
+-- TOC entry 5039 (class 0 OID 0)
 -- Dependencies: 229
 -- Name: UserQuestHistory_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -865,16 +933,16 @@ SELECT pg_catalog.setval('public."UserQuestHistory_Id_seq"', 1, false);
 
 
 --
--- TOC entry 5026 (class 0 OID 0)
+-- TOC entry 5040 (class 0 OID 0)
 -- Dependencies: 217
 -- Name: Users_Id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."Users_Id_seq"', 5, true);
+SELECT pg_catalog.setval('public."Users_Id_seq"', 6, true);
 
 
 --
--- TOC entry 4809 (class 2606 OID 16888)
+-- TOC entry 4815 (class 2606 OID 16888)
 -- Name: Categories Categories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -883,7 +951,7 @@ ALTER TABLE ONLY public."Categories"
 
 
 --
--- TOC entry 4785 (class 2606 OID 16671)
+-- TOC entry 4791 (class 2606 OID 16671)
 -- Name: MediaFiles MediaFiles_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -892,7 +960,7 @@ ALTER TABLE ONLY public."MediaFiles"
 
 
 --
--- TOC entry 4791 (class 2606 OID 16717)
+-- TOC entry 4797 (class 2606 OID 16717)
 -- Name: PageElements PageElements_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -901,7 +969,7 @@ ALTER TABLE ONLY public."PageElements"
 
 
 --
--- TOC entry 4789 (class 2606 OID 16702)
+-- TOC entry 4795 (class 2606 OID 16702)
 -- Name: Pages Pages_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -910,7 +978,7 @@ ALTER TABLE ONLY public."Pages"
 
 
 --
--- TOC entry 4793 (class 2606 OID 16737)
+-- TOC entry 4799 (class 2606 OID 16737)
 -- Name: QuestRatings QuestRatings_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -919,7 +987,7 @@ ALTER TABLE ONLY public."QuestRatings"
 
 
 --
--- TOC entry 4811 (class 2606 OID 16915)
+-- TOC entry 4819 (class 2606 OID 16915)
 -- Name: QuestTexts QuestText_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -928,7 +996,7 @@ ALTER TABLE ONLY public."QuestTexts"
 
 
 --
--- TOC entry 4787 (class 2606 OID 16683)
+-- TOC entry 4793 (class 2606 OID 16683)
 -- Name: Quests Quests_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -937,7 +1005,16 @@ ALTER TABLE ONLY public."Quests"
 
 
 --
--- TOC entry 4799 (class 2606 OID 16813)
+-- TOC entry 4821 (class 2606 OID 16957)
+-- Name: RefreshToken RefreshToken_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."RefreshToken"
+    ADD CONSTRAINT "RefreshToken_pkey" PRIMARY KEY ("Id");
+
+
+--
+-- TOC entry 4805 (class 2606 OID 16813)
 -- Name: TaskResponseTypes ResponseTypes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -946,7 +1023,7 @@ ALTER TABLE ONLY public."TaskResponseTypes"
 
 
 --
--- TOC entry 4801 (class 2606 OID 16825)
+-- TOC entry 4807 (class 2606 OID 16825)
 -- Name: TaskOptions TaskOptions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -955,7 +1032,7 @@ ALTER TABLE ONLY public."TaskOptions"
 
 
 --
--- TOC entry 4805 (class 2606 OID 16865)
+-- TOC entry 4811 (class 2606 OID 16865)
 -- Name: TaskResponses TaskResponses_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -964,7 +1041,7 @@ ALTER TABLE ONLY public."TaskResponses"
 
 
 --
--- TOC entry 4803 (class 2606 OID 16848)
+-- TOC entry 4809 (class 2606 OID 16848)
 -- Name: QuestTasks Tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -973,7 +1050,7 @@ ALTER TABLE ONLY public."QuestTasks"
 
 
 --
--- TOC entry 4795 (class 2606 OID 16784)
+-- TOC entry 4801 (class 2606 OID 16784)
 -- Name: UserQuestHistory UserQuestHistory_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -982,7 +1059,7 @@ ALTER TABLE ONLY public."UserQuestHistory"
 
 
 --
--- TOC entry 4779 (class 2606 OID 16662)
+-- TOC entry 4785 (class 2606 OID 16662)
 -- Name: Users Users_Email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -991,7 +1068,7 @@ ALTER TABLE ONLY public."Users"
 
 
 --
--- TOC entry 4781 (class 2606 OID 16660)
+-- TOC entry 4787 (class 2606 OID 16660)
 -- Name: Users Users_Username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1000,7 +1077,7 @@ ALTER TABLE ONLY public."Users"
 
 
 --
--- TOC entry 4783 (class 2606 OID 16658)
+-- TOC entry 4789 (class 2606 OID 16658)
 -- Name: Users Users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1009,7 +1086,16 @@ ALTER TABLE ONLY public."Users"
 
 
 --
--- TOC entry 4807 (class 2606 OID 16867)
+-- TOC entry 4817 (class 2606 OID 16947)
+-- Name: Categories category-uq; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Categories"
+    ADD CONSTRAINT "category-uq" UNIQUE ("Name");
+
+
+--
+-- TOC entry 4813 (class 2606 OID 16867)
 -- Name: TaskResponses uq_task_response; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1018,7 +1104,7 @@ ALTER TABLE ONLY public."TaskResponses"
 
 
 --
--- TOC entry 4797 (class 2606 OID 16786)
+-- TOC entry 4803 (class 2606 OID 16786)
 -- Name: UserQuestHistory uq_user_quest; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1027,7 +1113,7 @@ ALTER TABLE ONLY public."UserQuestHistory"
 
 
 --
--- TOC entry 4818 (class 2606 OID 16723)
+-- TOC entry 4828 (class 2606 OID 16723)
 -- Name: PageElements PageElements_MediaFileId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1036,7 +1122,7 @@ ALTER TABLE ONLY public."PageElements"
 
 
 --
--- TOC entry 4819 (class 2606 OID 16718)
+-- TOC entry 4829 (class 2606 OID 16718)
 -- Name: PageElements PageElements_PageId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1045,7 +1131,7 @@ ALTER TABLE ONLY public."PageElements"
 
 
 --
--- TOC entry 4817 (class 2606 OID 16703)
+-- TOC entry 4827 (class 2606 OID 16703)
 -- Name: Pages Pages_QuestId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1054,7 +1140,7 @@ ALTER TABLE ONLY public."Pages"
 
 
 --
--- TOC entry 4820 (class 2606 OID 16738)
+-- TOC entry 4830 (class 2606 OID 16738)
 -- Name: QuestRatings QuestRatings_QuestId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1063,7 +1149,7 @@ ALTER TABLE ONLY public."QuestRatings"
 
 
 --
--- TOC entry 4821 (class 2606 OID 16743)
+-- TOC entry 4831 (class 2606 OID 16743)
 -- Name: QuestRatings QuestRatings_UserId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1072,7 +1158,7 @@ ALTER TABLE ONLY public."QuestRatings"
 
 
 --
--- TOC entry 4812 (class 2606 OID 16684)
+-- TOC entry 4822 (class 2606 OID 16684)
 -- Name: Quests Quests_AuthorId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1081,7 +1167,7 @@ ALTER TABLE ONLY public."Quests"
 
 
 --
--- TOC entry 4813 (class 2606 OID 16923)
+-- TOC entry 4823 (class 2606 OID 16923)
 -- Name: Quests Quests_CategoryId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1090,7 +1176,7 @@ ALTER TABLE ONLY public."Quests"
 
 
 --
--- TOC entry 4814 (class 2606 OID 16933)
+-- TOC entry 4824 (class 2606 OID 16933)
 -- Name: Quests Quests_DesctiptionId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1099,7 +1185,7 @@ ALTER TABLE ONLY public."Quests"
 
 
 --
--- TOC entry 4815 (class 2606 OID 16689)
+-- TOC entry 4825 (class 2606 OID 16689)
 -- Name: Quests Quests_PreviewMediaFileId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1108,7 +1194,7 @@ ALTER TABLE ONLY public."Quests"
 
 
 --
--- TOC entry 4816 (class 2606 OID 16928)
+-- TOC entry 4826 (class 2606 OID 16928)
 -- Name: Quests Quests_TitleId_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1117,7 +1203,7 @@ ALTER TABLE ONLY public."Quests"
 
 
 --
--- TOC entry 4824 (class 2606 OID 16849)
+-- TOC entry 4834 (class 2606 OID 16849)
 -- Name: QuestTasks fk_page_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1126,7 +1212,7 @@ ALTER TABLE ONLY public."QuestTasks"
 
 
 --
--- TOC entry 4822 (class 2606 OID 16792)
+-- TOC entry 4832 (class 2606 OID 16792)
 -- Name: UserQuestHistory fk_quest_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1135,7 +1221,7 @@ ALTER TABLE ONLY public."UserQuestHistory"
 
 
 --
--- TOC entry 4825 (class 2606 OID 16854)
+-- TOC entry 4835 (class 2606 OID 16854)
 -- Name: QuestTasks fk_response_type_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1144,7 +1230,7 @@ ALTER TABLE ONLY public."QuestTasks"
 
 
 --
--- TOC entry 4826 (class 2606 OID 16868)
+-- TOC entry 4836 (class 2606 OID 16868)
 -- Name: TaskResponses fk_response_type_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1153,7 +1239,7 @@ ALTER TABLE ONLY public."TaskResponses"
 
 
 --
--- TOC entry 4827 (class 2606 OID 16873)
+-- TOC entry 4837 (class 2606 OID 16873)
 -- Name: TaskResponses fk_task_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1162,7 +1248,7 @@ ALTER TABLE ONLY public."TaskResponses"
 
 
 --
--- TOC entry 4823 (class 2606 OID 16787)
+-- TOC entry 4833 (class 2606 OID 16787)
 -- Name: UserQuestHistory fk_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1170,7 +1256,7 @@ ALTER TABLE ONLY public."UserQuestHistory"
     ADD CONSTRAINT fk_user_id FOREIGN KEY ("UserId") REFERENCES public."Users"("Id") ON DELETE CASCADE;
 
 
--- Completed on 2025-02-09 11:38:01
+-- Completed on 2025-02-12 20:54:51
 
 --
 -- PostgreSQL database dump complete
