@@ -29,4 +29,9 @@
     </ProjectReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\PageContents\" />
+    <Folder Include="wwwroot\Previews\" />
+  </ItemGroup>
+
 </Project>
