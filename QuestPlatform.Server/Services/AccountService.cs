@@ -22,6 +22,8 @@ namespace QuestPlatform.Server.Services
         {
             if (await _context.Users.AnyAsync(u => u.Email == request.Email))
                 return new RegisterResponse(false, "Користувач із такою поштою вже існує", 0);
+            if (await _context.Users.AnyAsync(u => u.Username == request.Username))
+                return new RegisterResponse(false, "Користувач із таким Username існує", 0);
 
             User? newUser = new User
             {
