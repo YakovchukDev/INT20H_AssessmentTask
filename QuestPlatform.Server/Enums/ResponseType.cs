@@ -4,7 +4,7 @@
     {
         Text,
         List,
-        Search,
-        Audio
+        SearchFrame,
+        SearchFrameArea
     }
 }

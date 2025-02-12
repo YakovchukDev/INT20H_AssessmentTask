@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using QuestPlatform.Server.Enums;
 using QuestPlatform.Server.Models;
 using QuestTask = QuestPlatform.Server.Models.QuestTask;
@@ -8,99 +7,125 @@ namespace QuestPlatform.Server.Data
 {
     public class QuestPlatformDbContext : DbContext
     {
-        public QuestPlatformDbContext(DbContextOptions<QuestPlatformDbContext> options) : base(options) { }
-
-        public DbSet<User> Users { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<MediaFile> MediaFiles { get; set; }
-        public DbSet<Quest> Quests { get; set; }
         public DbSet<Page> Pages { get; set; }
         public DbSet<PageElement> PageElements { get; set; }
+        public DbSet<Quest> Quests { get; set; }
         public DbSet<QuestRating> QuestRatings { get; set; }
-        public DbSet<QuestTask> Tasks { get; set; }
+        public DbSet<QuestTask> QuestTasks { get; set; }
+        public DbSet<QuestText> QuestTexts { get; set; }
         public DbSet<TaskOption> TaskOptions { get; set; }
         public DbSet<TaskResponse> TaskResponses { get; set; }
         public DbSet<TaskResponseType> TaskResponseTypes { get; set; }
-        public DbSet<UserQuestHistory> UserQuestHistory { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserQuestHistory> UserQuestHistories { get; set; }
+
+        public QuestPlatformDbContext(DbContextOptions<QuestPlatformDbContext> options): base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Quest relationships
-            modelBuilder.Entity<Quest>()
-                .HasOne(q => q.Author)
-                .WithMany(u => u.Quests)
-                .HasForeignKey(q => q.AuthorId)
-                .OnDelete(DeleteBehavior.Cascade);
+            base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Quest>()
-                .HasOne(q => q.PreviewMediaFile)
-                .WithMany()
-                .HasForeignKey(q => q.PreviewMediaFileId)
-                .OnDelete(DeleteBehavior.Restrict);
+            // Enum conversion
+            modelBuilder.Entity<User>()
+                .Property(u => u.Role)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (Role)Enum.Parse(typeof(Role), v)
+                );
 
-            // Page relationships
-            modelBuilder.Entity<Page>()
-                .HasOne(p => p.Quest)
-                .WithMany(q => q.Pages)
-                .HasForeignKey(p => p.QuestId)
-                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<MediaFile>()
+                .Property(m => m.FileType)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (FileType)Enum.Parse(typeof(FileType), v)
+                );
 
-            // PageElement relationships
             modelBuilder.Entity<PageElement>()
-                .HasOne(pe => pe.Page)
-                .WithMany(p => p.PageElements)
-                .HasForeignKey(pe => pe.PageId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .Property(p => p.ContentType)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (ContentType)Enum.Parse(typeof(ContentType), v)
+                );
+
+            modelBuilder.Entity<TaskResponseType>()
+                .Property(t => t.Type)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (ResponseType)Enum.Parse(typeof(ResponseType), v)
+                );
+
+            // Relationships
+            modelBuilder.Entity<Page>()
+                .HasMany(p => p.PageElements)
+                .WithOne(pe => pe.Page)
+                .HasForeignKey(pe => pe.PageId);
+
+            modelBuilder.Entity<Quest>()
+                .HasMany(q => q.Pages)
+                .WithOne(p => p.Quest)
+                .HasForeignKey(p => p.QuestId);
 
             modelBuilder.Entity<PageElement>()
                 .HasOne(pe => pe.MediaFile)
                 .WithMany()
-                .HasForeignKey(pe => pe.MediaFileId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .HasForeignKey(pe => pe.MediaFileId);
 
-            // QuestRating relationships
-            modelBuilder.Entity<QuestRating>()
-                .HasOne(qr => qr.Quest)
-                .WithMany(q => q.Ratings)
-                .HasForeignKey(qr => qr.QuestId)
-                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<QuestTask>()
+                .HasOne(qt => qt.Page)
+                .WithMany()
+                .HasForeignKey(qt => qt.PageId);
 
-            modelBuilder.Entity<QuestRating>()
-                .HasOne(qr => qr.User)
-                .WithMany(u => u.Ratings)
-                .HasForeignKey(qr => qr.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<QuestTask>()
+                .HasOne(qt => qt.ResponseType)
+                .WithMany()
+                .HasForeignKey(qt => qt.ResponseTypeId);
 
-            // Enum conversions
-            modelBuilder.Entity<MediaFile>()
-                .Property(m => m.FileType)
-                .HasConversion(
-                    m => m.ToString(),
-                    m => Enum.Parse<FileType>(m));
-
-            modelBuilder.Entity<PageElement>()
-                .Property(pe => pe.ContentType)
-                .HasConversion(
-                    pe => pe.ToString(),
-                    pe => Enum.Parse<ContentType>(pe));
-
-            modelBuilder.Entity<User>()
-                .Property(u => u.Role)
-                .HasConversion(
-                    u => u.ToString(),
-                    u => Enum.Parse<Role>(u));
-
-            modelBuilder.Entity<TaskResponseType>()
-                .Property(trt => trt.ResponseType)
-                .HasConversion(
-                    trt => trt.ToString(),
-                    trt => Enum.Parse<ResponseType>(trt));
-
-            // TaskOption relationships
             modelBuilder.Entity<TaskOption>()
                 .HasOne(to => to.Task)
-                .WithMany(t => t.TaskOptions)
-                .HasForeignKey(to => to.TaskId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WithMany()
+                .HasForeignKey(to => to.TaskId);
+
+            modelBuilder.Entity<TaskResponse>()
+                .HasOne(tr => tr.Task)
+                .WithMany()
+                .HasForeignKey(tr => tr.TaskId);
+
+            modelBuilder.Entity<TaskResponse>()
+                .HasOne(tr => tr.Type)
+                .WithMany()
+                .HasForeignKey(tr => tr.ResponseTypeId);
+
+            // New relationships
+            modelBuilder.Entity<UserQuestHistory>()
+                .HasOne(uh => uh.User)
+                .WithMany(u => u.UserQuestHistories)
+                .HasForeignKey(uh => uh.UserId);
+
+            modelBuilder.Entity<Quest>()
+                .HasMany(q => q.QuestRatings)
+                .WithOne(qr => qr.Quest)
+                .HasForeignKey(qr => qr.QuestId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Quests)
+                .WithOne(q => q.Author)
+                .HasForeignKey(q => q.AuthorId);
+
+            // Tags conversion
+            modelBuilder.Entity<Quest>()
+                .Property(q => q.Tags)
+                .HasConversion(
+                    v => string.Join(',', v),
+                    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToHashSet()
+                );
+        }
+
+        // Auto loading related entities
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }

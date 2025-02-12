@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using QuestPlatform.Server.Data;
+using QuestPlatform.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IQuestsService, QuestsService>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
