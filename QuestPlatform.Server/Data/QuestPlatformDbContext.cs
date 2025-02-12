@@ -113,13 +113,60 @@ namespace QuestPlatform.Server.Data
                 .WithOne(q => q.Author)
                 .HasForeignKey(q => q.AuthorId);
 
-            // Tags conversion
             modelBuilder.Entity<Quest>()
-                .Property(q => q.Tags)
-                .HasConversion(
-                    v => string.Join(',', v),
-                    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToHashSet()
-                );
+                .HasOne(q => q.PreviewMediaFile)
+                .WithOne()
+                .HasForeignKey<Quest>(q => q.PreviewMediaFileId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Quest>()
+                .HasOne(q => q.Title)
+                .WithMany()
+                .HasForeignKey(q => q.TitleId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Quest>()
+                .HasOne(q => q.Description)
+                .WithMany()
+                .HasForeignKey(q => q.DescriptionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Quest>()
+                .HasOne(q => q.Category)
+                .WithMany()
+                .HasForeignKey(q => q.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Quest>()
+                .HasOne(q => q.Author)
+                .WithMany(u => u.Quests)
+                .HasForeignKey(q => q.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Quest>()
+                .HasMany(q => q.Pages)
+                .WithOne(p => p.Quest)
+                .HasForeignKey(p => p.QuestId);
+
+            modelBuilder.Entity<PageElement>()
+                .HasOne(pe => pe.MediaFile)
+                .WithMany()
+                .HasForeignKey(pe => pe.MediaFileId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<QuestRating>()
+                .HasOne(qr => qr.Quest)
+                .WithMany(q => q.QuestRatings)
+                .HasForeignKey(qr => qr.QuestId);
+
+            modelBuilder.Entity<QuestRating>()
+                .HasOne(qr => qr.User)
+                .WithMany(u => u.Ratings)
+                .HasForeignKey(qr => qr.UserId);
+
+            modelBuilder.Entity<Quest>()
+                .Property(q => q.AuthorId)
+                .HasColumnType("integer");
         }
 
         // Auto loading related entities

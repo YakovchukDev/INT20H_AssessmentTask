@@ -17,7 +17,7 @@ namespace QuestPlatform.Server.Models
         public int CategoryId { get; set; }
         public int Participants { get; set; }
         public int Difficulty { get; set; }
-        public HashSet<string>? Tags { get; set; }
+        public string[]? Tags { get; set; }
         public bool? Visible { get; set; }
 
         public QuestText Title { get; set; }

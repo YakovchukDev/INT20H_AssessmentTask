@@ -14,9 +14,9 @@ namespace QuestPlatform.Server.Services
         Task<bool> UpdateQuestAsync(int id, QuestRequest quest);
         Task<bool> DeleteQuestAsync(int id);
 
-        Task<bool> StartQuest(int questId, UserDTO userDTO);
-        Task<PageResponse?> GetQuestPage(int questId, UserDTO userDTO);
-        Task<bool> CheckTaskResponse(int questId, UserDTO userDTO, TaskResponseDTO response);
-        Task<bool> FinishQuest(int questId, UserDTO userDTO);
+        Task<bool> StartQuestAsync(int questId, int userId);
+        Task<PageResponse?> GetCurrentPageAsync(int questId, int userId);
+        Task<bool> CheckAnswerAsync(int questId, int userId, TaskResponseDTO response);
+        Task<bool> FinishQuestAsync(int questId, int userId);
     }
 }

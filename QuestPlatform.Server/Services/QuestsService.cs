@@ -25,18 +25,19 @@ namespace QuestPlatform.Server.Services
             if (id == null || id <= 0) return null;
 
             Quest? quest = await _context.Quests.FirstOrDefaultAsync(q => q.Id == id);
-            return quest != null ? ConvertToQuestResponse(quest) : null;
+            return quest != null ? ConvertToQuestResponse(quest.Id) : null;
         }
 
         public async Task<QuestResponse[]?> GetQuestsByCategoryAsync(string category)
         {
             if (string.IsNullOrWhiteSpace(category)) return null;
 
-            Quest[] quests = await _context.Quests
+            int[] questIds = await _context.Quests
                 .Where(q => q.Category != null && q.Category.Name == category)
+                .Select(q => q.Id)
                 .ToArrayAsync();
 
-            return quests.Length > 0 ? ConvertToQuestsResponse(quests) : null;
+            return questIds.Length > 0 ? ConvertToQuestsResponse(questIds) : null;
         }
 
         public async Task<QuestResponse[]?> GetQuestsByUserComplitedQuestsAsync(UserDTO user)
@@ -50,39 +51,36 @@ namespace QuestPlatform.Server.Services
 
             if (completedQuestIds.Length == 0) return null;
 
-            Quest[] quests = await _context.Quests
-                .Where(q => completedQuestIds.Contains(q.Id))
-                .ToArrayAsync();
-
-            return quests.Length > 0 ? ConvertToQuestsResponse(quests) : null;
+            return ConvertToQuestsResponse(completedQuestIds);
         }
 
         public async Task<QuestResponse[]?> GetQuestsByUserCreatedQuestAsync(UserDTO user)
         {
             if (user == null || user.Id <= 0) return null;
 
-            Quest[] quests = await _context.Quests
+            int[] questIds = await _context.Quests
                 .Where(q => q.Author != null && q.Author.Id == user.Id)
+                .Select(q => q.Id)
                 .ToArrayAsync();
 
-            return quests.Length > 0 ? ConvertToQuestsResponse(quests) : null;
+            return questIds.Length > 0 ? ConvertToQuestsResponse(questIds) : null;
         }
 
         public async Task<QuestResponse[]?> GetQuestsByFilterAsync(SearchFilter filter)
         {
             if(filter == null) return null;
 
-            Quest[] quests = await _context.Quests
+            int[] questIds = await _context.Quests
                 .Where(q => (
                 q.Category.Name == filter.Category)
                 && ((filter.NoLimitTimer) || (q.Timer.Minutes >= filter.Timer.Min && q.Timer.Minutes <= filter.Timer.Max))
                 && (q.Participants >= filter.Participants.Min && q.Participants <= filter.Participants.Max)
                 && (q.Difficulty >= filter.Difficulty.Min && q.Difficulty <= filter.Difficulty.Max)
                 && (q.Rating >= filter.Rating.Min && q.Rating <= filter.Rating.Max)
-                && (q.Tags.Intersect(filter.Tags).Any()))
+                && (q.Tags.Intersect(filter.Tags).Any())).Select(q => q.Id)
                 .ToArrayAsync();
 
-            return quests != null ? ConvertToQuestsResponse(quests) : null;
+            return questIds != null ? ConvertToQuestsResponse(questIds) : null;
         }
 
         public async Task<bool> CreateQuestAsync(QuestRequest quest)
@@ -94,7 +92,7 @@ namespace QuestPlatform.Server.Services
 
             if (quest.Author.Id == null || quest.Author.Id < 0) return false;
             User author = _context.Users.FirstOrDefault(u => u.Id == quest.Author.Id);
-            if (author != null)
+            if (author == null)
             {
                 return false;
             }
@@ -146,7 +144,7 @@ namespace QuestPlatform.Server.Services
                 if (quest.Pages[i].Title == null) return false;
                 Page page = _context.Pages.Add(new Page() { QuestId = newQuest.Id, PageNumber = i, Title = quest.Pages[i].Title, Quest = newQuest }).Entity;
 
-                if (quest.Pages[i].Elements != null) continue;
+                if (quest.Pages[i].Elements == null) continue;
                 List<PageElement> pageElements = new List<PageElement>();
                 for (int j = 0; j < quest.Pages[i].Elements.Count; j++)
                 {
@@ -156,7 +154,7 @@ namespace QuestPlatform.Server.Services
                         string elementFileName = $"{newQuest.Id}{page.Id}{pageElements[j].Order}.{Path.GetExtension(quest.PreviewMediaFile.FileName).ToLower()}";
                         string elementFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "PageContents", elementFileName);
                         mediaFile = _context.MediaFiles.Add(new MediaFile() { FilePath = elementFilePath, FileType = (FileType)Enum.Parse(typeof(FileType), quest.Pages[i].Elements[j].ContentType.ToString()) }).Entity;
-                        using (var stream = new FileStream(elementFileName, FileMode.Create))
+                        using (var stream = new FileStream(elementFilePath, FileMode.Create))
                         {
                             await quest.PreviewMediaFile.CopyToAsync(stream);
                         }
@@ -181,8 +179,12 @@ namespace QuestPlatform.Server.Services
                 _context.QuestTasks.FirstOrDefault(t => t.Id == task.Id).TaskOptions = optionsList;
             }
 
-            _context.SaveChanges();
-            return true;
+            try
+            {
+                _context.SaveChanges();
+                return true;
+            }
+            catch { return false; }
         }
 
         public async Task<bool> UpdateQuestAsync(int id, QuestRequest updatedQuest)
@@ -235,7 +237,7 @@ namespace QuestPlatform.Server.Services
             List<Page> pages = _context.Pages.Where(p => p.QuestId == quest.Id).ToList();
             for (int i = 0; i < updatedQuest.Pages.Count; i++)
             {
-                if (updatedQuest.Pages[i].Elements != null) continue;
+                if (updatedQuest.Pages[i].Elements == null) continue;
                 if(pages.Count > i)
                 {
                     pages[i].Title = updatedQuest.Pages[i].Title;
@@ -328,7 +330,7 @@ namespace QuestPlatform.Server.Services
                 {
                     Page page = _context.Pages.Add(new Page() { QuestId = quest.Id, PageNumber = i, Title = updatedQuest.Pages[i].Title, Quest = quest }).Entity;
 
-                    if (updatedQuest.Pages[i].Elements != null) continue;
+                    if (updatedQuest.Pages[i].Elements == null) continue;
                     List<PageElement> pageElements = new List<PageElement>();
                     for (int j = 0; j < updatedQuest.Pages[i].Elements.Count; j++)
                     {
@@ -373,8 +375,11 @@ namespace QuestPlatform.Server.Services
             }
             quest.Pages = pages;
 
-            _context.SaveChanges();
-            return true;
+            try
+            {
+                _context.SaveChanges();
+                return true;
+            }catch {  return false; }
         }
 
         public async Task<bool> DeleteQuestAsync(int id)
@@ -416,32 +421,39 @@ namespace QuestPlatform.Server.Services
             _context.UserQuestHistories.RemoveRange(_context.UserQuestHistories.Where(qh => qh.QuestId == id).ToList());
             _context.MediaFiles.Remove(quest.PreviewMediaFile);
             _context.Quests.Remove(quest);
-            
-            _context.SaveChanges();
 
-            return true;
+            try
+            {
+                _context.SaveChanges();
+                return true;
+            }
+            catch { return false; }
         }
 
-        public async Task<bool> StartQuest(int questId, UserDTO userDTO)
+        public async Task<bool> StartQuestAsync(int questId, int userId)
         {
-            if (questId == null || questId < 0 || userDTO == null || userDTO.Id == null || userDTO.Id < 0) return false;
+            if (questId == null || questId < 0 || userId == null || userId <= 0) return false;
             
             Quest quest = _context.Quests.FirstOrDefault(q => q.Id == questId);
-            User user = _context.Users.FirstOrDefault(u => u.Id == userDTO.Id);
+            User user = _context.Users.FirstOrDefault(u => u.Id == userId);
             if(user == null || quest == null) return false;
             
             _context.UserQuestHistories.Add(new UserQuestHistory() { QuestId = quest.Id, Quest = quest, Status = QuestStatus.InProgress, Step = 0, UserId = user.Id, User = user, TimeSpent = TimeSpan.FromMinutes(0) });
-            _context.SaveChanges();
-            
-            return true;
+
+            try
+            {
+                _context.SaveChanges();
+                return true;
+            }
+            catch { return false; }
         }
 
-        public async Task<PageResponse?> GetQuestPage(int questId, UserDTO userDTO)
+        public async Task<PageResponse?> GetCurrentPageAsync(int questId, int userId)
         {
-            if (questId == null || questId < 0 || userDTO == null || userDTO.Id == null || userDTO.Id < 0) return null;
+            if (questId == null || questId < 0 || userId == null || userId <= 0) return null;
             
             Quest quest = _context.Quests.FirstOrDefault(q => q.Id == questId);
-            User user = _context.Users.FirstOrDefault(u => u.Id == userDTO.Id);
+            User user = _context.Users.FirstOrDefault(u => u.Id == userId);
             
             if (user == null || quest == null) return null;
             UserQuestHistory userQuestHistory = _context.UserQuestHistories.FirstOrDefault(uqh => uqh.QuestId == quest.Id && uqh.UserId == user.Id);
@@ -462,12 +474,12 @@ namespace QuestPlatform.Server.Services
             return null;
         }
 
-        public async Task<bool> CheckTaskResponse(int questId, UserDTO userDTO, TaskResponseDTO response)
+        public async Task<bool> CheckAnswerAsync(int questId, int userId, TaskResponseDTO response)
         {
-            if (questId == null || questId < 0 || response != null) return false;
+            if (questId == null || questId <= 0 || userId == null || userId <= 0 || response != null) return false;
 
             Quest quest = _context.Quests.FirstOrDefault(q => q.Id == questId);
-            User user = _context.Users.FirstOrDefault(u => u.Id == userDTO.Id);
+            User user = _context.Users.FirstOrDefault(u => u.Id == userId);
             if (user == null || quest == null) return false;
             UserQuestHistory userQuestHistory = _context.UserQuestHistories.FirstOrDefault(uqh => uqh.QuestId == quest.Id && uqh.UserId == user.Id);
             if (userQuestHistory == null) return false;
@@ -483,12 +495,12 @@ namespace QuestPlatform.Server.Services
             return false;
         }
 
-        public async Task<bool> FinishQuest(int questId, UserDTO userDTO)
+        public async Task<bool> FinishQuestAsync(int questId, int userId)
         {
-            if (questId == null || questId < 0) return false;
+            if (questId == null || questId <= 0 || userId == null || userId <= 0) return false;
 
             Quest quest = _context.Quests.FirstOrDefault(q => q.Id == questId);
-            User user = _context.Users.FirstOrDefault(u => u.Id == userDTO.Id);
+            User user = _context.Users.FirstOrDefault(u => u.Id == userId);
             if (user == null || quest == null) return false;
             UserQuestHistory userQuestHistory = _context.UserQuestHistories.FirstOrDefault(uqh => uqh.QuestId == quest.Id && uqh.UserId == user.Id);
             if (userQuestHistory == null) return false;
@@ -499,18 +511,28 @@ namespace QuestPlatform.Server.Services
             return false;
         }
 
-        private QuestResponse[] ConvertToQuestsResponse(Quest[] quests) 
+        private QuestResponse[] ConvertToQuestsResponse(int[] questIds) 
         {
-            QuestResponse[] questResponses = new QuestResponse[quests.Length]; 
-            for(int i = 0; i < quests.Length; i++)
+            QuestResponse[] questResponses = new QuestResponse[questIds.Length]; 
+            for(int i = 0; i < questIds.Length; i++)
             {
-                questResponses[i] = ConvertToQuestResponse(quests[i]);
+                questResponses[i] = ConvertToQuestResponse(questIds[i]);
             }
             return questResponses;
         }
 
-        private QuestResponse ConvertToQuestResponse(Quest quest) 
+        private QuestResponse ConvertToQuestResponse(int questId)
         {
+            Quest quest = _context.Quests
+                .Include(q => q.PreviewMediaFile)
+                .Include(q => q.Title)
+                .Include(q => q.Description)
+                .Include(q => q.Category)
+                .Include(q => q.Author)
+                .Include(q => q.QuestRatings)
+                .Include(q => q.Pages)
+                .FirstOrDefault(q => q.Id == questId);
+
             var fileStream = new FileStream(quest.PreviewMediaFile.FilePath, FileMode.Open);
             QuestResponse questResponse = new QuestResponse(
                 quest.Id,

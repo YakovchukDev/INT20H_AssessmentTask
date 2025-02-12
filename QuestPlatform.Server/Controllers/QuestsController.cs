@@ -74,6 +74,58 @@ namespace QuestPlatform.Server.Controllers
             var result = await _questsService.DeleteQuestAsync(id);
             return result ? Ok("Quest deleted successfully.") : NotFound("Quest not found.");
         }
+
+        [HttpPost("start/{userId}/{questId}")]
+        public async Task<IActionResult> StartQuest(int userId, int questId)
+        {
+            var result = await _questsService.StartQuestAsync(questId, userId);
+
+            if (result)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest();
+        }
+
+        [HttpGet("currentPage/{userId}/{questId}")]
+        public async Task<IActionResult> GetCurrentPage(int questId, int userId)
+        {
+            var currentPage = await _questsService.GetCurrentPageAsync(questId, userId);
+
+            if (currentPage != null)
+            {
+                return Ok(currentPage);
+            }
+
+            return NotFound("Сторінку не знайдено.");
+        }
+
+        [HttpPost("checkAnswer/{userId}/{questId}")]
+        public async Task<IActionResult> CheckAnswer(int userId, int questId, [FromBody] TaskResponseDTO answer)
+        {
+            var result = await _questsService.CheckAnswerAsync(questId, userId, answer);
+
+            if (result)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
+        [HttpPost("finish/{userId}/{questId}")]
+        public async Task<IActionResult> FinishQuest(int userId, int questId)
+        {
+            var result = await _questsService.FinishQuestAsync(questId, userId);
+
+            if (result)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
     }
 
 }
