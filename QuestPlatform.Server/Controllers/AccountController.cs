@@ -76,23 +76,6 @@ namespace QuestPlatform.Server.Controllers
                 ? Ok(new { message = "Профіль успішно оновлено" })
                 : NotFound(new { message = "Помилка оновлення профілю" });
         }
-
-        [HttpGet("{username}/quests")]
-        public async Task<IActionResult> GetUserQuests(string username)
-        {
-            var completedQuests = await _accountService.GetCompletedQuestsAsync(username);
-            var createdQuests = await _accountService.GetCreatedQuestsAsync(username);
-
-            if (!completedQuests.Any() && !createdQuests.Any())
-            {
-                return NotFound(new { message = "User not found or no quests available." });
-            }
-            return Ok(new
-            {
-                CompletedQuests = completedQuests,
-                CreatedQuests = createdQuests
-            });
-        }
     }
 }
 
