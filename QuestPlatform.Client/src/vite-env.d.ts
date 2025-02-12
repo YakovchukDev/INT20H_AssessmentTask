@@ -1,1 +1,1 @@
-/// <reference types="vite/client" />
+/// <reference scheme="vite/client" />
