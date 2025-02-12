@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../src/find_quest.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+    </style>
 </head>
 <body>
     <header>
@@ -26,14 +29,14 @@
     
             <div class="category">
                 <label class="category__label">
-                    <img class="category__icon" src="images/category.png" alt="category">Категорія
+                    <img class="category__icon-nav" src="images/category.png" alt="category">Категорія
                 </label><br>
                 <input class="category__input" type="text" placeholder="Категорія">
             </div>
     
             <div class="time">
                 <label class="time__label">
-                    <img class="time__icon" src="images/time.png" alt="time">Час (хв)
+                    <img class="time__icon-nav" src="images/time.png" alt="time">Час (хв)
                 </label><br>
                 <div class="input">
                     <input class="time__input" type="number" placeholder="xxx" min="30" max="180">
@@ -46,7 +49,7 @@
             
             <div class="people">
                 <label class="people__label">
-                    <img class="people__icon" src="images/people.png" alt="people">Участники
+                    <img class="people__icon-nav" src="images/people.png" alt="people">Участники
                 </label><br>
                 <div class="input">
                     <input class="people__input" type="number" placeholder="xx" min="1" max="99">
@@ -57,7 +60,7 @@
             </div>
             
             <label class="difficulty__label">
-                <img class="difficulty__icon" src="images/hard.png" alt=""> Складність
+                <img class="difficulty__icon-nav" src="images/hard.png" alt=""> Складність
             </label><br>
             <div class="difficulty">
                 <input class="difficulty__radio" type="radio" name="difficulty">
@@ -69,7 +72,7 @@
     
             <div class="stars">
                 <label class="stars__label">
-                    <img class="stars__icon" src="images/star.png" alt="star">Рейтинг
+                    <img class="stars__icon-nav" src="images/star.png" alt="star">Рейтинг
                 </label><br>
                 <div class="input">
                     <input class="stars__input" type="number" placeholder="x.xx" min="1.00" max="5.00">
@@ -107,11 +110,12 @@
                         </div>
                         <div class="hard__block">
                             <img class="hard__icon" src="images/hard.png" alt="hard">
-                            <img class="hard__icon" src="images/hard+.png" alt="hard+">
-                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
-                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
-                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
-                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+
+                            <img class="hard__text" src="images/hard+.png" alt="hard+">
+                            <img class="hard__text" src="images/hard-.png" alt="hard-">
+                            <img class="hard__text" src="images/hard-.png" alt="hard-">
+                            <img class="hard__text" src="images/hard-.png" alt="hard-">
+                            <img class="hard__text" src="images/hard-.png" alt="hard-">
                         </div>
                         <div class="tag__block">
                             <img class="tag__icon" src="images/tag.png" alt="tag">
@@ -135,18 +139,19 @@
                         <div class="people__block">
                             <img class="people__icon" src="images/people.png" alt="people">
                             <p class="people__text">1</p>
-                        </div>
+                        </div><br>
                         <div class="star__block">
                             <img class="star__icon" src="images/star.png" alt="star">
                             <p class="star__text">5.00</p>
                         </div>
                         <div class="hard__block">
                             <img class="hard__icon" src="images/hard.png" alt="hard">
-                            <img class="hard__icon" src="images/hard+.png" alt="hard+">
-                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
-                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
-                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
-                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+                            
+                            <img class="hard__text" src="images/hard+.png" alt="hard+">
+                            <img class="hard__text" src="images/hard-.png" alt="hard-">
+                            <img class="hard__text" src="images/hard-.png" alt="hard-">
+                            <img class="hard__text" src="images/hard-.png" alt="hard-">
+                            <img class="hard__text" src="images/hard-.png" alt="hard-">
                         </div>
                         <div class="tag__block">
                             <img class="tag__icon" src="images/tag.png" alt="tag">
@@ -180,11 +185,11 @@
                         </div>
                         <div class="hard__block">
                             <img class="hard__icon" src="images/hard.png" alt="hard">
-                            <img class="hard__icon" src="images/hard+.png" alt="hard+">
-                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
-                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
-                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
-                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+                            <img class="hard__text" src="images/hard+.png" alt="hard+">
+                            <img class="hard__text" src="images/hard-.png" alt="hard-">
+                            <img class="hard__text" src="images/hard-.png" alt="hard-">
+                            <img class="hard__text" src="images/hard-.png" alt="hard-">
+                            <img class="hard__text" src="images/hard-.png" alt="hard-">
                         </div>
                         <div class="tag__block">
                             <img class="tag__icon" src="images/tag.png" alt="tag">
@@ -215,11 +220,11 @@
                         </div>
                         <div class="hard__block">
                             <img class="hard__icon" src="images/hard.png" alt="hard">
-                            <img class="hard__icon" src="images/hard+.png" alt="hard+">
-                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
-                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
-                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
-                            <img class="hard__icon" src="images/hard-.png" alt="hard-">
+                            <img class="hard__text" src="images/hard+.png" alt="hard+">
+                            <img class="hard__text" src="images/hard-.png" alt="hard-">
+                            <img class="hard__text" src="images/hard-.png" alt="hard-">
+                            <img class="hard__text" src="images/hard-.png" alt="hard-">
+                            <img class="hard__text" src="images/hard-.png" alt="hard-">
                         </div>
                         <div class="tag__block">
                             <img class="tag__icon" src="images/tag.png" alt="tag">

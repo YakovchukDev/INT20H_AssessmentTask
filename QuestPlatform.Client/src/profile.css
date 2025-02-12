@@ -210,3 +210,239 @@ body {
     height: 240px;
     background: #d9d9d9;
 }
+
+
+
+
+
+@media (max-width: 1024px) {
+    body {
+        width: 1024px;
+    }
+
+    .info {
+        margin-left: 40px;
+    }
+
+    .quested {
+        margin-left: 40px;
+    }
+}
+
+
+@media (max-width: 768px) {
+    body {
+        width: 768px;
+        text-align: center;
+    }
+
+    .info {
+        margin-left: 80px;
+        display: flex;
+    }
+
+    .user__info {
+        margin-top: 20px;
+        margin-left: 40px;
+    }
+
+    .quested {
+        margin-left: 80px;
+    }
+
+    .profil {
+        display: flex;
+        flex-wrap: wrap;
+    }
+}
+
+
+@media (max-width: 320px) {
+    body {
+        width: 320px;
+    }
+
+    .info {
+        flex-wrap: wrap;
+        margin: 10px;
+    }
+
+    .user__info {
+        margin-top: 10px;
+        margin-left: 10px;
+    }
+
+    .profil {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+
+
+
+
+    .badge {
+        display: flex;
+        margin-top: 10px;
+    }
+    
+    .img-badge {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .p-badge {
+        padding-left: 5px;
+        font-size: 20px;
+    }
+    
+    .btn_edit {
+        margin-top: 20px;
+        width: 285px;
+        height: 40px;
+        border-radius: 30px;
+        background: #d9d9d9;
+        display: flex;
+    }
+    
+    .btn-p {
+        margin: 0;
+        font-family: "IBM Plex Mono", sans-serif;
+        font-weight: 600;
+        font-size: 20px;
+        color: #000;
+        padding-top: 9px;
+        padding-left: 20px;
+    }
+    
+    .btn-img {
+        width: 30px;
+        height: 30px;
+        padding-top: 5px;
+        padding-left: 8px;
+    }
+
+
+
+
+
+
+
+
+
+
+
+    .user_icons {
+        margin-top: 10px;
+        margin-left: 100px;
+        width: 100px;
+        height: 100px;
+    }
+
+    .user_name {
+        margin: 0;
+        font-size: 24px;
+    }
+
+    .user_subname {
+        margin: 0;
+        font-size: 20px;
+    }
+
+
+
+    .folow {
+        margin-top: 12px;
+        display: flex;
+    }
+
+    .follower {
+        margin-left: 20px;
+        display: flex;
+    }
+
+    .i-follower {
+        font-size: 14px;
+    }
+
+    .p-follower {
+        font-size: 14px;
+        margin: 0;
+        padding-left: 5px;
+    }
+
+    .follow {
+        margin-left: 20px;
+        display: flex;
+    }
+
+    .i-follow {
+        font-size: 14px;
+    }
+
+    .p-follow {
+        font-size: 14px;
+        margin: 0;
+        padding-left: 5px;
+    }
+
+    /* ?????????????????????????? */
+
+
+    .quest {
+        flex-wrap: wrap;
+    }
+
+
+    .quested {
+        margin-left: 10px;
+    }
+
+    .created {
+        display: flex;
+        margin-top: 10px;
+        margin-left: 60px;
+    }
+
+    .created-p {
+        font-size: 14px;
+        margin-top: 0;
+    }
+
+    .created-i {
+        width: 20px;
+        height: 20px;
+        margin-left: 4px;
+    }
+
+    .i {
+        font-size: 14px;
+        margin-left: 0px;
+        margin-top: 0px;
+    }
+
+    .passed {
+        display: flex;
+        margin-top: 10px;
+        margin-left: 60px;
+    }
+
+    .passed-p {
+        font-size: 14px;
+        margin-top: 0;
+    }
+
+    .passed-i {
+        width: 20px;
+        height: 20px;
+        margin-left: 4px;
+    }
+
+    .blcok {
+        margin-top: 10px;
+        border-radius: 30px;
+        width: 300px;
+        height: 180px;
+    }
+
+}
