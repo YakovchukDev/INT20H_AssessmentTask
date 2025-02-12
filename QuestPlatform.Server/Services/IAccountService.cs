@@ -11,7 +11,5 @@ namespace QuestPlatform.Server.Services
         Task<string?> RefreshTokenAsync(string refreshToken);
         Task<UserDTO?> GetProfileAsync(string username);
         Task<bool> UpdateProfileAsync(UserRequest request);
-        Task<List<UserQuestHistoryDTO>> GetCompletedQuestsAsync(string username);
-        Task<List<CreatedQuestDTO>> GetCreatedQuestsAsync(string username);
     }
 }

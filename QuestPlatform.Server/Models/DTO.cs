@@ -63,6 +63,4 @@ namespace QuestPlatform.Server.Models
 
     public record QuestReviewRequest(int QuestId, UserDTO Author, int Rating, string Measege);
     public record QuestReviewsResponse(UserDTO Author, int Rating, string Measege);
-    public record UserQuestHistoryDTO(int QuestId, string Title, QuestStatus Status, TimeSpan TimeSpent, int Step);
-    public record CreatedQuestDTO(int QuestId, string Title, DateTime CreatedAt);
 }

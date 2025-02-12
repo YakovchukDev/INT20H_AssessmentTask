@@ -511,6 +511,37 @@ namespace QuestPlatform.Server.Services
             return false;
         }
 
+        public async Task<QuestResponse[]> GetCompletedQuestsAsync(string username)
+        {
+            User? user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Username == username);
+
+            if (user == null) return Array.Empty<QuestResponse>();
+
+            int[] completedQuestIds = await _context.UserQuestHistories
+                .Where(qh => qh.UserId == user.Id)
+                .Select(qh => qh.QuestId)
+                .ToArrayAsync();
+
+            return ConvertToQuestsResponse(completedQuestIds);
+        }
+
+        public async Task<QuestResponse[]> GetCreatedQuestsAsync(string username)
+        {
+            User? user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Username == username);
+
+            if (user == null) return Array.Empty<QuestResponse>();
+
+            int[] createdQuestIds = await _context.Quests
+                .Where(q => q.AuthorId == user.Id)
+                .Select(q => q.Id)
+                .ToArrayAsync();
+
+            return ConvertToQuestsResponse(createdQuestIds);
+        }
+
+
         private QuestResponse[] ConvertToQuestsResponse(int[] questIds) 
         {
             QuestResponse[] questResponses = new QuestResponse[questIds.Length]; 

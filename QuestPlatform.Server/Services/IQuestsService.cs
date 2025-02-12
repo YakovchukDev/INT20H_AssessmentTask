@@ -18,5 +18,7 @@ namespace QuestPlatform.Server.Services
         Task<PageResponse?> GetCurrentPageAsync(int questId, int userId);
         Task<bool> CheckAnswerAsync(int questId, int userId, TaskResponseDTO response);
         Task<bool> FinishQuestAsync(int questId, int userId);
+        Task<QuestResponse[]> GetCompletedQuestsAsync(string username);
+        Task<QuestResponse[]> GetCreatedQuestsAsync(string username);
     }
 }

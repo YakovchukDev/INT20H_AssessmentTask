@@ -126,6 +126,22 @@ namespace QuestPlatform.Server.Controllers
 
             return BadRequest();
         }
+        [HttpGet("{username}/quests")]
+        public async Task<IActionResult> GetUserQuests(string username)
+        {
+            var completedQuests = await _questsService.GetCompletedQuestsAsync(username);
+            var createdQuests = await _questsService.GetCreatedQuestsAsync(username);
+
+            if (!completedQuests.Any() && !createdQuests.Any())
+            {
+                return NotFound(new { message = "User not found or no quests available." });
+            }
+            return Ok(new
+            {
+                CompletedQuests = completedQuests,
+                CreatedQuests = createdQuests
+            });
+        }
     }
 
 }

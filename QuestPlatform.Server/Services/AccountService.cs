@@ -13,11 +13,13 @@ namespace QuestPlatform.Server.Services
         private readonly QuestPlatformDbContext _context;
         private readonly IConfiguration _configuration;
         private readonly TokenService _tokenService;
+        private readonly QuestsService _questsService;
 
         public AccountService(QuestPlatformDbContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
+            _questsService = new QuestsService(context);
             _tokenService = new TokenService(context, configuration);
         }
 
@@ -109,38 +111,6 @@ namespace QuestPlatform.Server.Services
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
             return true;
-        }
-
-        public async Task<List<UserQuestHistoryDTO>> GetCompletedQuestsAsync(string username)
-        {
-            User? user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Username == username);
-
-            if (user == null) return new List<UserQuestHistoryDTO>();
-
-            return await _context.UserQuestHistories
-                .Where(qh => qh.UserId == user.Id)
-                .Select(qh => new UserQuestHistoryDTO(
-                    qh.Quest.Id,
-                    qh.Quest.Title,
-                    qh.Status,
-                    qh.TimeSpent,
-                    qh.Step
-                ))
-                .ToListAsync();
-        }
-
-        public async Task<List<CreatedQuestDTO>> GetCreatedQuestsAsync(string username)
-        {
-            User? user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Username == username);
-
-            if (user == null) return new List<CreatedQuestDTO>();
-
-            return await _context.Quests
-                .Where(q => q.AuthorId == user.Id)
-                .Select(q => new CreatedQuestDTO(q.Id, q.Title, q.CreatedAt))
-                .ToListAsync();
         }
     }
 }
