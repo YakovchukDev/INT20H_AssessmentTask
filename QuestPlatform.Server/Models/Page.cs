@@ -12,5 +12,6 @@ namespace QuestPlatform.Server.Models
 
         public Quest Quest { get; set; }
         public List<PageElement> PageElements { get; set; }
+        public List<QuestTask> QuestTasks { get; set; }
     }
 }

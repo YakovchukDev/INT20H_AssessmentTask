@@ -21,7 +21,7 @@ namespace QuestPlatform.Server.Data
         public DbSet<User> Users { get; set; }
         public DbSet<UserQuestHistory> UserQuestHistories { get; set; }
 
-        public QuestPlatformDbContext(DbContextOptions<QuestPlatformDbContext> options): base(options) { }
+        public QuestPlatformDbContext(DbContextOptions<QuestPlatformDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -167,12 +167,6 @@ namespace QuestPlatform.Server.Data
             modelBuilder.Entity<Quest>()
                 .Property(q => q.AuthorId)
                 .HasColumnType("integer");
-        }
-
-        // Auto loading related entities
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }

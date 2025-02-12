@@ -9,7 +9,7 @@ namespace QuestPlatform.Server.Models
         public int TitleId { get; set; }
         public int DescriptionId { get; set; }
         public int AuthorId { get; set; }
-        public decimal Rating { get; set; }
+        public decimal? Rating { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public int PreviewMediaFileId { get; set; }

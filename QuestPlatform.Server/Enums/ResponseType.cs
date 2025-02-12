@@ -3,7 +3,7 @@
     public enum ResponseType
     {
         Text,
-        List,
+        Option,
         SearchFrame,
         SearchFrameArea
     }
